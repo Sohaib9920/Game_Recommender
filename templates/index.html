@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/1.jpg') }}");
+      background-size: cover;
+      background-repeat: no-repeat;
+    } 
+  </style>
+  <script>
+    $(function() {
+      // Fetch the recommended game names from the server
+      $.ajax({
+        url: '/get_recommended_names',
+        type: 'GET',
+        success: function(response) {
+          // Initialize the autocomplete input field with the recommended names
+          $('.game_name').autocomplete({
+            source: response.recommended_names
+          });
+        }
+      });
+    });
+  </script>
+
+  <div class="container py-5 my-5">
+    <div class="row">
+      <div class="col-md-4 form-container">
+
+        <h1 class="text-center mb-4">Game Recommender</h1>
+        <form method="POST">
+          {% for i in range(1,4) %}
+            <div class="mb-2">
+              <input type="text" class="game_name form-control" name="game{{ i }}_name" placeholder="Game {{i}} Name" required>
+            </div>
+            <div class="mb-3">
+              <input type="number" class="form-control" name="game{{ i }}_rating" placeholder="Rating" min="0" max="10" required>
+            </div>
+          {% endfor %}
+          <input type="submit" class="btn btn-outline mt-1" value="Recommend">
+        </form>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+    
