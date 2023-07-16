@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Load the data and initialize the recommender
 ubyi_norm_0 = pd.read_csv("ubyi_norm_0.csv", index_col=0)
-als = ExplicitMF(n_iters=5, n_factors=80, reg=0.01)
+als = ExplicitMF(n_iters=5, n_factors=20, reg=0.01)
 column_names = ubyi_norm_0.columns.values
 
 # Explanation of Matrix Factorization for Recommender Systems
@@ -23,17 +23,16 @@ column_names = ubyi_norm_0.columns.values
 # By performing Matrix Factorization, the model can predict ratings for user-game pairs that were not originally present in the 'ubyi_norm_0' dataframe. This enables the generation of personalized recommendations based on the predicted ratings.
 # Overall, Matrix Factorization provides an effective approach for building recommender systems by uncovering latent features and predicting user-item interactions with minimal error.
 
+FAVOURITE_RATING = 7
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         game_ratings = {}
-        for i in range(1, 4): 
+        for i in range(1, 6): 
             game_name = request.form.get(f'game{i}_name')
-
             if game_name in column_names:
-                game_rating = float(request.form.get(f'game{i}_rating'))
-                game_ratings[game_name] = game_rating
+                game_ratings[game_name] = FAVOURITE_RATING
 
         # Generate a new user ID and add the ratings to ubyi_norm_0
         new_user_id = ubyi_norm_0.index[-1] + 1
@@ -63,4 +62,4 @@ def get_recommended_names():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
