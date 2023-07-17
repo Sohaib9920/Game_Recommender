@@ -1,6 +1,4 @@
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 
 
@@ -72,12 +70,3 @@ class ExplicitMF:
         mse = mean_squared_error(y_true[mask], y_pred[mask])
         return mse
     
-
-def plot_learning_curve(model):
-    """visualize the training/testing loss"""
-    linewidth = 3
-    plt.plot(model.train_mse_record, label = 'Train', linewidth = linewidth)
-    plt.xlabel('iterations')
-    plt.ylabel('MSE')
-    plt.legend(loc = 'best')
-    plt.show()
