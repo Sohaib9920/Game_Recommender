@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-3">Register</h1>
+                <form action="" method="POST">
+                    {{ form.csrf_token }}
+                    <div class="mb-3">
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control is-invalid", placeholder=form.username.label.text) }}
+                            <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.username(class="form-control", placeholder=form.username.label.text) }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text) }}
+                            <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control", placeholder=form.email.label.text) }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control is-invalid", placeholder=form.password.label.text) }}
+                            <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control", placeholder=form.password.label.text) }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="form-control is-invalid", placeholder=form.confirm_password.label.text) }}
+                            <div class="invalid-feedback">
+                            {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirm_password(class="form-control", placeholder=form.confirm_password.label.text) }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.submit(class="btn btn-dark mt-2") }}
+                    </div>
+                </form>
+                <div >
+                    <small class="text-muted">Already Have An Account? <a href="{{ url_for('login') }}">Sign In</a> </small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

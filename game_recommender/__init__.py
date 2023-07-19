@@ -1,14 +1,27 @@
-import numpy as np
+import os
 import pandas as pd
-from matrix_factorization import ExplicitMF
-from flask import Flask, request, render_template, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+from game_recommender.matrix_factorization import ExplicitMF
 
 app = Flask(__name__)
 
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") # secrets.token_hex(16)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
+
+db = SQLAlchemy(app)
+
+# Get the absolute path to the package directory
+package_directory = os.path.dirname(__file__)
+# Construct the file path relative to the package directory
+data_file_path = os.path.join(package_directory, "ubyi_norm_0.csv")
+print(data_file_path)
+
 # Load the data and initialize the recommender
-ubyi_norm_0 = pd.read_csv("ubyi_norm_0.csv", index_col=0)
+ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)
 als = ExplicitMF(n_iters=5, n_factors=20, reg=0.01)
-column_names = ubyi_norm_0.columns.values
+game_names = ubyi_norm_0.columns.values
+FAVOURITE_RATING = 7
 
 # Explanation of Matrix Factorization for Recommender Systems
 
@@ -23,43 +36,4 @@ column_names = ubyi_norm_0.columns.values
 # By performing Matrix Factorization, the model can predict ratings for user-game pairs that were not originally present in the 'ubyi_norm_0' dataframe. This enables the generation of personalized recommendations based on the predicted ratings.
 # Overall, Matrix Factorization provides an effective approach for building recommender systems by uncovering latent features and predicting user-item interactions with minimal error.
 
-FAVOURITE_RATING = 7
-
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        game_ratings = {}
-        for i in range(1, 6): 
-            game_name = request.form.get(f'game{i}_name')
-            if game_name in column_names:
-                game_ratings[game_name] = FAVOURITE_RATING
-
-        # Generate a new user ID and add the ratings to ubyi_norm_0
-        new_user_id = ubyi_norm_0.index[-1] + 1
-        ubyi_norm_0.loc[new_user_id] = 0
-        for game, rating in game_ratings.items():
-            ubyi_norm_0.at[new_user_id, game] = rating
-
-        # Re-fit the ALS model with updated ubyi_norm_0
-        als.fit(ubyi_norm_0.to_numpy())
-
-        # Execute the recommendation function
-        ratings = np.dot(als.user_factors, als.item_factors.T)
-        ubyi_mf = pd.DataFrame(ratings, index=ubyi_norm_0.index.values, columns=ubyi_norm_0.columns.values)
-        games_to_consider_mask = ubyi_norm_0.loc[new_user_id] == 0
-        top5 = ubyi_mf.loc[new_user_id, games_to_consider_mask].sort_values(ascending=False)[:5].index.values
-        recommendations = [{'rank': idx+1, 'game': game} for idx, game in enumerate(top5)]
-
-        return render_template('recommendations.html',title="Recommendations", recommendations=recommendations)
-    
-    return render_template('index.html', title="Recommender")
-
-
-@app.route('/get_recommended_names', methods=['GET'])
-def get_recommended_names():
-    column_names = ubyi_norm_0.columns.values
-    return {'recommended_names': column_names.tolist()}   
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+from game_recommender import routes
