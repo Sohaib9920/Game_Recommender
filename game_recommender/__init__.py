@@ -15,7 +15,6 @@ db = SQLAlchemy(app)
 package_directory = os.path.dirname(__file__)
 # Construct the file path relative to the package directory
 data_file_path = os.path.join(package_directory, "ubyi_norm_0.csv")
-print(data_file_path)
 
 # Load the data and initialize the recommender
 ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)

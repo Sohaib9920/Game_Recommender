@@ -1,4 +1,16 @@
-.form-container .btn {
+/* Game recommender */
+
+.game-container h1 {
+  color: #92111d;
+}
+
+.game-container input.form-control {
+  background-color: #12161f;
+  color: #fff;
+  border-color: #92111d;
+}
+
+.game-container .btn {
   background-color: #92111d;
   border-color: #92111d;
   font-weight: 600;
@@ -6,20 +18,12 @@
   box-shadow: 0 0 5px #92111d;
 }
 
-.form-container .btn:hover {
+.game-container .btn:hover {
   background-color: #12161f;
   color: #92111d;
 }
 
-.form-container h1 {
-  color: #92111d;
-}
-
-.form-container input.form-control {
-  background-color: #12161f;
-  color: #fff;
-  border-color: #92111d;
-}
+/* Recommendations */
 
 .recommend-container a {
   background-color: #da252b;
@@ -33,3 +37,93 @@
   background-color: #000;
   color: #da252b;
 }
+
+/* Login */
+
+.login-container h1 {
+  color: #fbce43;
+}
+
+.login-container a {
+  text-decoration: none;
+  color: #fbce43;
+}
+
+.login-container a:hover {
+  color: #fbce43 !important;
+}
+
+.login-container input.form-control {
+  background-color: #46101e;
+  color: #fff;
+  border-color: #fbce43;
+}
+
+.login-container .btn {
+  background-color: #fbce43;
+  border-color: #fbce43;
+  font-weight: 600;
+  color: #46101e;
+  box-shadow: 0 0 5px #fbce43;
+  width: 120px;
+}
+
+.login-container .btn:hover {
+  background-color: #46101e;
+  color: #fbce43;
+}
+
+.login-container input.form-check-input{
+  box-shadow: none;
+}
+
+.login-container input.form-check-input:checked{
+  background-color: #fbce43;
+  border-color: #fbce43;
+}
+
+/* Register */
+
+.register-container h1 {
+  color: #fbce43;
+}
+
+.register-container a {
+  text-decoration: none;
+  color: #fbce43;
+}
+
+.register-container a:hover {
+  color: #fbce43 !important;
+}
+
+.register-container input.form-control {
+  background-color: #271217;
+  color: #fff;
+  border-color: #fbce43;
+}
+
+.register-container .btn {
+  background-color: #fbce43;
+  border-color: #fbce43;
+  font-weight: 600;
+  color: #271217;
+  box-shadow: 0 0 5px #fbce43;
+  width: 120px;
+}
+
+.register-container .btn:hover {
+  background-color: #271217;
+  color: #fbce43;
+}
+
+body .navbar {
+  background-color: rgba(30,10,10,0.9);
+}
+
+.flash-messages-container {
+  position: fixed;
+  top: 55px;
+  width: 100%;
+}
+

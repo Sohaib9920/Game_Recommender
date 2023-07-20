@@ -1,21 +1,33 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1 class="text-center mb-3">Login</h1>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/3.jpg')}}");
+            background-size: 100vw 100vh;
+        }
+        @media screen and (max-width: 992px) {
+            body {
+                background-image: url("{{ url_for('static', filename='images/3-2.jpg') }}");
+                background-size: 100vw 100vh;
+            }
+        }
+    </style>
+    <div class="container">
+        <div class="row min-vh-100 justify-content-end align-items-center align-items-lg-end">
+            <div class="col-lg-5 pb-lg-5 mb-lg-5 me-lg-5 text-center login-container">
+                <h1 class="mb-4">Login</h1>
                 <form action="" method="POST">
                     {{ form.csrf_token }}
                     <div class="mb-3">
                         {% if form.email.errors %}
-                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text) }}
+                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
                             {% for error in form.email.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.email(class="form-control", placeholder=form.email.label.text) }}
+                            {{ form.email(class="form-control", placeholder=form.email.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
                     <div class="mb-3">
@@ -30,16 +42,16 @@
                             {{ form.password(class="form-control", placeholder=form.password.label.text) }}
                         {% endif %}
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="mb-3 form-check">
-                            {{ form.remember(class="form-check-input")}}{{ form.remember.label(class="form-check-label")}}
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="form-check">
+                            {{ form.remember(class="form-check-input")}}{{ form.remember.label(class="form-check-label text-muted")}}
                         </div>
                         <div>
                             <a href="#" class="text-muted">Forgot Password?</a>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        {{ form.submit(class="btn btn-dark mt-2") }}
+                    <div class="mb-2">
+                        {{ form.submit(class="btn btn-outline") }}
                     </div>
                 </form>
                 <small class="text-muted align-top">

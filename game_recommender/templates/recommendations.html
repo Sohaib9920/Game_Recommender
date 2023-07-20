@@ -3,17 +3,21 @@
   <style>
       body {
         background-image: url("{{ url_for('static', filename='images/2.jpg') }}");
-        /* Additional styling */
-        background-size: cover; /* Adjust as per your requirements */
-        background-repeat: no-repeat;
+        background-size: 100vw 115vh;
+      } 
+      @media screen and (max-width: 992px) {
+        body {
+          background-image: none;
+          background-color: black;
+        }
       }
   </style>
 
-  <div class="container py-5 my-5">
-    <div class="row justify-content-end">
-      <div class="col-md-5 recommend-container">
-        <h1 class="text-center mb-5" style="color: #da252b;">Recommendations</h1>
+  <div class="container">
+    <div class="row min-vh-100 justify-content-end align-items-center">
+      <div class="col-lg-5 text-center recommend-container">
 
+        <h1 class="mb-4" style="color: #da252b;">Recommendations</h1>
         <table class="table" style="border-color: #da252b;">
           <tbody>
             {% for recommendation in recommendations %}
@@ -27,10 +31,10 @@
             {% endfor %}
           </tbody>
         </table>
-
-        <div class="text-center mt-5">
+        <div class="pt-3">
           <a href="{{ url_for('home') }}" class="btn btn-outline">New Recommendation</a>
         </div>
+
       </div>
     </div>
   </div>

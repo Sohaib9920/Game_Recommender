@@ -3,10 +3,16 @@
   <style>
     body {
       background-image: url("{{ url_for('static', filename='images/1.jpg') }}");
-      background-size: cover;
-      background-repeat: no-repeat;
+      background-size: 100vw 115vh;
     } 
+    @media screen and (max-width: 992px) {
+      body {
+        background-image: url("{{ url_for('static', filename='images/1-2.jpg') }}");
+        background-size: 100vw 100vh;
+      }
+    }
   </style>
+
   <script>
     $(function() {
       // Fetch the recommended game names from the server
@@ -23,18 +29,20 @@
     });
   </script>
 
-  <div class="container py-5 my-5">
-    <div class="row">
-      <div class="col-md-4 form-container">
+  <div class="container">
+    <div class="row min-vh-100 justify-content-start align-items-center">
+      <div class="col-lg-4 pb-lg-5 text-center game-container ">
 
-        <h1 class="text-center mb-4">Game Recommender</h1>
+        <h1 class="mb-4">Game Recommender</h1>
         <form method="POST">
           {% for i in range(1,6) %}
-            <div class="mb-2">
+            <div class="mb-3">
               <input type="text" class="game_name form-control" name="game{{ i }}_name" placeholder="Favourite Game {{i}}" required>
             </div>
           {% endfor %}
-          <input type="submit" class="btn btn-outline mt-2" value="Recommend">
+          <div class="text-lg-start pt-2">
+            <input type="submit" class="btn btn-outline" value="Recommend">
+          </div>
         </form>
 
       </div>

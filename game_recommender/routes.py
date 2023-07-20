@@ -18,7 +18,7 @@ def home():
 
         return render_template("recommendations.html",title="Recommendations", recommendations=recommendations)
     
-    return render_template("index.html", title="Recommender")
+    return render_template("recommender.html", title="Recommender")
 
 
 @app.route("/get_recommended_names", methods=["GET"])

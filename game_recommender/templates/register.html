@@ -1,33 +1,45 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1 class="text-center mb-3">Register</h1>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/4.jpg')}}");
+            background-size: auto;
+        }
+        @media screen and (max-width: 992px) {
+        body {
+            background-image: url("{{ url_for('static', filename='images/4-2.jpg') }}");
+            background-size: 100vw 100vh;
+            }
+        }
+    </style>
+    <div class="container">
+        <div class="row min-vh-100 justify-content-end align-items-center">
+            <div class="col-lg-6 text-center register-container">
+                <h1 class="mb-4">Register</h1>
                 <form action="" method="POST">
                     {{ form.csrf_token }}
                     <div class="mb-3">
                         {% if form.username.errors %}
-                            {{ form.username(class="form-control is-invalid", placeholder=form.username.label.text) }}
+                            {{ form.username(class="form-control is-invalid", placeholder=form.username.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
                             {% for error in form.username.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.username(class="form-control", placeholder=form.username.label.text) }}
+                            {{ form.username(class="form-control", placeholder=form.username.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
                     <div class="mb-3">
                         {% if form.email.errors %}
-                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text) }}
+                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
                             {% for error in form.email.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.email(class="form-control", placeholder=form.email.label.text) }}
+                            {{ form.email(class="form-control", placeholder=form.email.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
                     <div class="mb-3">
