@@ -3,6 +3,9 @@ import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from game_recommender.matrix_factorization import ExplicitMF
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
+
 
 app = Flask(__name__)
 
@@ -10,11 +13,13 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") # secrets.token_hex(16)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = "login" # Specify where to redirect when login is required
+login_manager.login_message_category = "info"
 
-# Get the absolute path to the package directory
-package_directory = os.path.dirname(__file__)
-# Construct the file path relative to the package directory
-data_file_path = os.path.join(package_directory, "ubyi_norm_0.csv")
+
+data_file_path = os.path.join(app.root_path, "ubyi_norm_0.csv")
 
 # Load the data and initialize the recommender
 ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)

@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block content %}
+    <style>
+        body {
+        background-color: black;
+        }
+    </style>
+
+    <div class="container account-container mb-5">
+        <div class="row">
+
+            <div class="col-lg-7">
+                <div class="content-section">
+
+                    <div class="d-flex mb-4">
+                        <img src="{{ image_file }}" class="rounded-circle account-img">
+                        <div class="ms-3 mt-4 overflow-auto">
+                            <h2>{{ current_user.username }}</h2>
+                            <p class="text-secondary">{{ current_user.email }}</p>
+                        </div>
+                    </div>
+            
+                    <div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {{ form.csrf_token }}
+                            <h1 class="mb-4">Account Info</h1>
+                            <div class="mb-3">
+                                {% if form.username.errors %}
+                                    {{ form.username(class="form-control is-invalid", autocomplete="off") }}
+                                    <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.username(class="form-control", autocomplete="off") }}
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                {% if form.email.errors %}
+                                    {{ form.email(class="form-control is-invalid", autocomplete="off") }}
+                                    <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.email(class="form-control", autocomplete="off") }}
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.picture.label(class="form-label text-muted") }}
+                                {{ form.picture(class="form-control")}}
+                                {% if form.picture.errors %}
+                                    {% for error in form.picture.errors %}
+                                        <span class="text-danger">{{ error }}</span><br>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.submit(class="btn btn-outline-light mt-2 update-button") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+                <div class="content-section">
+                    <h3>My Top Favorite Games</h3>
+                    <p class="text-muted">Based on ratings on your gamer profile:</p>
+                    {% if game_ratings %}
+                    <ol class="list-group list-group-numbered">
+                        {% for rating_object in game_ratings %}
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="fw-bold ms-2 me-auto overflow-auto">{{ rating_object.game.title }}</div>
+                                <span class="badge bg-success ms-1">{{ rating_object.rating }}/10</span>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                    <div class="mt-3 text-center">
+                        <a href="#" class="btn btn-outline-light mt-2 update-button">Update Gamer Profile</a>
+                    </div>
+                    {% else %}
+                    <ol class="list-group">
+                        <li class="list-group-item">
+                            You don't have a Gamer Profile. Please Create it.
+                        </li>
+                    </ol>
+                    <div class="mt-3 text-center">
+                        <a href="#" class="btn btn-outline-light mt-2 update-button">Create Gamer Profile</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+    

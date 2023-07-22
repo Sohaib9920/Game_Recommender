@@ -117,6 +117,8 @@
   color: #fbce43;
 }
 
+/* Navbar and flash messages */
+
 body .navbar {
   background-color: rgba(30,10,10,0.9);
 }
@@ -127,3 +129,27 @@ body .navbar {
   width: 100%;
 }
 
+/* Account container */
+
+.account-container {
+  margin-top: 13vh;
+}
+
+.account-img {
+  width: 125px;
+  height: 125px;
+}
+
+.content-section {
+  background: rgb(30, 10, 10);
+  padding: 10px 20px 20px;
+  border: 1px solid rgb(40, 12, 12);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: whitesmoke
+}
+
+.update-button {
+  background-color: rgb(20,7,7);
+  font-weight: 500;
+}
