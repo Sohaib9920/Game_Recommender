@@ -13,28 +13,12 @@
     }
   </style>
 
-  <script>
-    $(function() {
-      // Fetch the recommended game names from the server
-      $.ajax({
-        url: '/get_recommended_names',
-        type: 'GET',
-        success: function(response) {
-          // Initialize the autocomplete input field with the recommended names
-          $('.game_name').autocomplete({
-            source: response.recommended_names
-          });
-        }
-      });
-    });
-  </script>
-
   <div class="container">
     <div class="row min-vh-100 justify-content-start align-items-center">
       <div class="col-lg-4 pb-lg-5 text-center game-container ">
 
         <h1 class="mb-4">Game Recommender</h1>
-        <form method="POST">
+        <form method="POST" onsubmit="return validateForm()" data-game-names="{{ game_names_json }}" id="game_form">
           {% for i in range(1,6) %}
             <div class="mb-3">
               <input type="text" class="game_name form-control" name="game{{ i }}_name" placeholder="Favourite Game {{i}}" required>
@@ -48,6 +32,7 @@
       </div>
     </div>
   </div>
+
 {% endblock %}
 
     

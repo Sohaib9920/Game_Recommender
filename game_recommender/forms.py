@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField, IntegerField, FormField, FieldList, Form
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from game_recommender.models import User
 from flask_login import current_user
@@ -48,4 +48,4 @@ class UpdateAccountForm(FlaskForm):
             existing_user = User.query.filter_by(email=email.data).first()
             if existing_user:
                 raise ValidationError("That email is taken. Please choose a different one")
-        
+

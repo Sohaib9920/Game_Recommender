@@ -24,7 +24,7 @@ data_file_path = os.path.join(app.root_path, "ubyi_norm_0.csv")
 # Load the data and initialize the recommender
 ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)
 als = ExplicitMF(n_iters=5, n_factors=20, reg=0.01)
-game_names = ubyi_norm_0.columns.values
+game_names = ubyi_norm_0.columns.values.tolist()
 FAVOURITE_RATING = 7
 
 # Explanation of Matrix Factorization for Recommender Systems

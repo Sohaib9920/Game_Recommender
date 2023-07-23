@@ -5,6 +5,7 @@ from game_recommender.models import User, Rating
 from game_recommender.recommend import recommend_games
 from flask_login import login_user, logout_user, login_required, current_user
 from game_recommender.utils import save_picture
+import json
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -19,13 +20,12 @@ def home():
         recommendations = recommend_games(ubyi_norm_0, user_ratings, als)
         return render_template("recommendations.html",title="Recommendations", recommendations=recommendations)
     
-    return render_template("recommender.html", title="Recommender")
+    return render_template("recommender.html", title="Recommender", game_names_json = json.dumps(game_names))
 
 
 @app.route("/get_recommended_names", methods=["GET"])
 def get_recommended_names():
-    game_names = ubyi_norm_0.columns.values
-    return {"recommended_names": game_names.tolist()}  
+    return {"recommended_names": game_names}  
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -91,3 +91,8 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template("account.html", title="Account", image_file=image_file, form=form, game_ratings=game_ratings)
     
+
+@app.route("/profile/new", methods=["GET", "POST"])
+@login_required
+def new_profile():
+    pass
