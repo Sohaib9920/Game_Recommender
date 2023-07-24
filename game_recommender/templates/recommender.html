@@ -19,13 +19,14 @@
 
         <h1 class="mb-4">Game Recommender</h1>
         <form method="POST" onsubmit="return validateForm()">
-          {% for i in range(1,6) %}
+          {{ form.csrf_token }}
+          {% for field in form.games %}
             <div class="mb-3">
-              <input list="gameNameList" type="text" class="game_name form-control" name="game{{ i }}_name" placeholder="Favourite Game {{i}}" required>
+              {{ field(class="game_name form-control", list="gameNameList", placeholder="Favourite Game " + loop.index|string) }}
             </div>
           {% endfor %}
           <div class="text-lg-start pt-2">
-            <input type="submit" class="btn btn-outline" value="Recommend">
+            {{ form.submit(class="btn btn-outline") }}
           </div>
           <!-- Datalist element for autocomplete -->
           <datalist id="gameNameList">

@@ -1,26 +1,25 @@
 from flask import request, render_template, url_for, flash, redirect
 from game_recommender import app, db, bcrypt, ubyi_norm_0, als, game_names, FAVOURITE_RATING
-from game_recommender.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from game_recommender.forms import RecommenderFrom, RegistrationForm, LoginForm, UpdateAccountForm
 from game_recommender.models import User, Rating
 from game_recommender.recommend import recommend_games
 from flask_login import login_user, logout_user, login_required, current_user
 from game_recommender.utils import save_picture
-import json
 
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    if request.method == "POST":
+    form = RecommenderFrom()
+    if form.validate_on_submit():
         user_ratings = {}
-        for i in range(1, 6): 
-            game_name = request.form.get(f"game{i}_name")
-            if game_name in game_names:
-                user_ratings[game_name] = FAVOURITE_RATING
+        for i in range(5): 
+            game_name = form.games[i].data.strip()  # OR: request.form.get(f"games-{i}").strip()
+            user_ratings[game_name] = FAVOURITE_RATING # JavaScript is used to validate valid names and avoid duplicates.
 
         recommendations = recommend_games(ubyi_norm_0, user_ratings, als)
-        return render_template("recommendations.html",title="Recommendations", recommendations=recommendations)
+        return render_template("recommendations.html", title="Recommendations", recommendations=recommendations)
     
-    return render_template("recommender.html", title="Recommender", game_names_json = json.dumps(game_names))
+    return render_template("recommender.html", title="Recommender", form=form)
 
 
 @app.route("/get_recommended_names", methods=["GET"])

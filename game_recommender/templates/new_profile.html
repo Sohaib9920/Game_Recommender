@@ -6,29 +6,16 @@
     } 
   </style>
 
-  <script>
-    $(function() {
-      // Fetch the recommended game names from the server
-      $.ajax({
-        url: '/get_recommended_names',
-        type: 'GET',
-        success: function(response) {
-          // Initialize the autocomplete input field with the recommended names
-          $('.game_name').autocomplete({
-            source: response.recommended_names
-          });
-        }
-      });
-    });
-  </script>
-
   <div class="container" style="margin-top: 10vh;">
     <div class="row  justify-content-center">
         <div class="col-5">
-            <h1>Multiple Game Form</h1>
+            <!-- <h1>Multiple Game Form</h1> -->
             <form method="POST" action="#">
-                {{ form.games }}
-                <input type="submit" value="Submit">
+                {% for field in form.games %}
+                <div class="mb-3">
+                  {{ field(class="form-control", required="required", placeholder="Favourite Game " + loop.index|string) }}
+                </div>
+                {% endfor %}
             </form>
         </div>
     </div>
