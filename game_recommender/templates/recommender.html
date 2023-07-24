@@ -18,15 +18,19 @@
       <div class="col-lg-4 pb-lg-5 text-center game-container ">
 
         <h1 class="mb-4">Game Recommender</h1>
-        <form method="POST" onsubmit="return validateForm()" data-game-names="{{ game_names_json }}" id="game_form">
+        <form method="POST" onsubmit="return validateForm()">
           {% for i in range(1,6) %}
             <div class="mb-3">
-              <input type="text" class="game_name form-control" name="game{{ i }}_name" placeholder="Favourite Game {{i}}" required>
+              <input list="gameNameList" type="text" class="game_name form-control" name="game{{ i }}_name" placeholder="Favourite Game {{i}}" required>
             </div>
           {% endfor %}
           <div class="text-lg-start pt-2">
             <input type="submit" class="btn btn-outline" value="Recommend">
           </div>
+          <!-- Datalist element for autocomplete -->
+          <datalist id="gameNameList">
+            <!-- Recommended game names will be added here -->
+          </datalist>
         </form>
 
       </div>
