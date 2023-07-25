@@ -1,7 +1,7 @@
 from flask import request, render_template, url_for, flash, redirect
 from game_recommender import app, db, bcrypt, ubyi_norm_0, als, game_names, FAVOURITE_RATING
-from game_recommender.forms import RecommenderFrom, RegistrationForm, LoginForm, UpdateAccountForm
-from game_recommender.models import User, Rating
+from game_recommender.forms import RecommenderForm, RegistrationForm, LoginForm, UpdateAccountForm
+from game_recommender.models import User, Rating, Game
 from game_recommender.recommend import recommend_games
 from flask_login import login_user, logout_user, login_required, current_user
 from game_recommender.utils import save_picture
@@ -9,11 +9,11 @@ from game_recommender.utils import save_picture
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    form = RecommenderFrom()
+    form = RecommenderForm()
     if form.validate_on_submit():
         user_ratings = {}
         for i in range(5): 
-            game_name = form.games[i].data.strip()  # OR: request.form.get(f"games-{i}").strip()
+            game_name = form.games[i].data.strip() # must strip as js validation ignoring trailing spaces and allow these values in payload
             user_ratings[game_name] = FAVOURITE_RATING # JavaScript is used to validate valid names and avoid duplicates.
 
         recommendations = recommend_games(ubyi_norm_0, user_ratings, als)
@@ -91,7 +91,35 @@ def account():
     return render_template("account.html", title="Account", image_file=image_file, form=form, game_ratings=game_ratings)
     
 
-@app.route("/profile/new", methods=["GET", "POST"])
+@app.route("/profile", methods=["GET", "POST"])
 @login_required
-def new_profile():
-    pass
+def profile():
+    if request.method == "POST":
+        # Instead of quering database for each game name to get game object, query single time and store the result in {game name: game object}
+        game_mapping = {game_object.title : game_object for game_object in Game.query.all()}
+
+        # It is easier to initailly remove all the ratings of user and then re-add them at once after both updating existing games and inserting new games
+        current_user.ratings = []
+
+        for key, value in request.form.items():
+            if key.startswith("games-"):
+                game_name = value.strip() # must be striped as JS validation allows unstriped value of game name
+                rating = int(request.form.get(f"ratings-{key.split('-')[1]}")) # make sure that the rating is integer
+                
+                print(f'-{game_name}-')
+                print(type(rating))
+
+                # Add new ratings objects to user
+                game_object = game_mapping.get(game_name) # JS validation makes sure that game_object for input game name exits
+                rating_object = Rating(user = current_user, game = game_object, rating = rating)
+                db.session.add(rating_object)
+        
+        db.session.commit()
+        return redirect(url_for("profile"))
+
+    # Render the tempelate with values of game names and ratings inserted so that we could re submit them (after updating) in post request       
+    game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).all()
+    return render_template("profile.html", title="Profile", game_ratings=game_ratings)
+
+
+

@@ -49,8 +49,6 @@ function validateForm() {
     // Get game name from the element
     const inputElement = inputElements[i];
     const gameName = inputElement.value.trim();  
-    // element.value will give the current value in the element 
-    // element.getAttribute("value") gives the initial value set in the HTML attribute.
 
     // Check if the game name is empty
     if (gameName === "") {
@@ -76,4 +74,63 @@ function validateForm() {
     gameNames.add(gameName);
   }
   return true; // Allow form submission if all validations pass
+}
+
+
+// Extract the counter from id of last present input field and increment it to create counter for id of new input field
+let counter = 0;
+const lastChild = document.querySelector("#present div:last-child"); // Select div element which has last-child property
+if (lastChild) {
+  counter = Number((lastChild.id).split("-")[1]) + 1;
+}
+
+// Add new input field in div with 'new' id while updating the counter
+function addGame() {
+  const newDiv = document.querySelector("#new");
+
+  // <div class="mb-3" id="counter">
+  const mainDiv = document.createElement("div");
+  mainDiv.className = "mb-3";
+  mainDiv.id = `input-${counter}`;
+
+  // Create input field for game name
+  const gameInputField = document.createElement("input");
+  gameInputField.type = "text";
+  gameInputField.name = `games-${counter}`;
+  gameInputField.className = "game_name form-control";
+  gameInputField.setAttribute("list", "gameNameList"); // list is non-standard attribute so .list do not work
+  gameInputField.placeholder = "Game Name";
+  gameInputField.required = true;
+
+  // Create input field for rating value
+  const ratingInputField = document.createElement("input");
+  ratingInputField.type = "number";
+  ratingInputField.name = `ratings-${counter}`;
+  ratingInputField.className = "form-control mt-1";
+  ratingInputField.min = "0";
+  ratingInputField.max = "10";
+  ratingInputField.placeholder = "Rating (0-10)";
+  ratingInputField.required = true;
+
+  // Create input field for delete button
+  const deleteButton = document.createElement("input");
+  deleteButton.type = "button";
+  deleteButton.className = "btn btn-danger btn-sm mt-1";
+  deleteButton.value = "Delete";
+  deleteButton.setAttribute("onclick",`deleteGame('input-${counter}')`);
+
+
+  newDiv.appendChild(mainDiv);
+  mainDiv.appendChild(gameInputField);
+  mainDiv.appendChild(ratingInputField);
+  mainDiv.appendChild(deleteButton);
+
+  // Increment counter for next game field
+  counter ++;
+}
+
+
+function deleteGame(id) {
+  const divToDelete = document.getElementById(id);
+  divToDelete.remove();
 }

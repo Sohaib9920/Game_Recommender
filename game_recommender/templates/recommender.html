@@ -18,7 +18,8 @@
       <div class="col-lg-4 pb-lg-5 text-center game-container ">
 
         <h1 class="mb-4">Game Recommender</h1>
-        <form method="POST" onsubmit="return validateForm()">
+        <form method="POST" onsubmit="return validateForm()"> 
+          <!-- Need to return. Otherwise function runs but its output is not used to stop form submission-->
           {{ form.csrf_token }}
           {% for field in form.games %}
             <div class="mb-3">
@@ -26,7 +27,7 @@
             </div>
           {% endfor %}
           <div class="text-lg-start pt-2">
-            {{ form.submit(class="btn btn-outline") }}
+            {{ form.submit(class="btn") }}
           </div>
           <!-- Datalist element for autocomplete -->
           <datalist id="gameNameList">

@@ -56,26 +56,45 @@ from game_recommender.models import User, Game, Rating
 
 #     for game_name, rating in game_list.items():
 #         game = game_mapping.get(game_name)
-#         # If that game was not previously existed then make it and add it to db and game_mapping
-#         if game is None:
-#             game = Game(title=game_name)
-#             db.session.add(game)
-#             db.session.flush() # Flush to generate game_id. It kind of refreshes the db
-#             game_mapping[game.title] = game
-
 #         rating = Rating(rating=rating, game_id=game.id, user_id=user.id)
 #         db.session.add(rating)
     
 #     db.session.commit()
 #     print(Rating.query.all())
 
-with app.app_context():
-    user = User.query.filter_by(username="sohaib456").first()
-    game_ratings = Rating.query.filter_by(user_id=user.id).order_by(Rating.rating.desc()).all()
-    print(game_ratings)
-    for rating in game_ratings:
-        print(rating.game.title, rating.rating)
-        
-        
 
-        
+
+### Miscelleous:
+
+# with app.app_context():
+#     user = User.query.filter_by(username="sohaib456").first()
+#     game_ratings = Rating.query.filter_by(user_id=user.id).order_by(Rating.rating.desc()).all()
+#     print(game_ratings)
+#     for rating in game_ratings:
+#         print(rating.game.title, rating.rating)
+## Result: You cannot apply .order_by on user.ratings which is list. It is applied on Rating.query which has Rating.rating column 
+
+
+# with app.app_context():
+#     user = User.query.filter_by(username="sohaib456").first()
+#     game = Game.query.filter_by(title="BioShock Infinite").first()
+#     rating = Rating(rating=8, game=game, user=user)
+#     db.session.add(rating)
+#     print(rating)     
+## Result: You can use either user_id and game_id OR user and game directly
+
+
+# with app.app_context():
+#     user = User.query.filter_by(username="sohaib456").first()
+#     game = Game.query.filter_by(title="BioShock Infinite").first()
+
+#     user.ratings = []
+#     print(user.ratings)
+
+#     rating = Rating(rating=8, game=game, user=user)
+#     db.session.add(rating)
+#     print(user.ratings)
+
+#     ratings = Rating.query.filter_by(user_id = user.id).all()
+#     print(ratings)        
+## Result: You can directly change user ratings from user.ratings

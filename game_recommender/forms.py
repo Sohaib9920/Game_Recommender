@@ -1,6 +1,6 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, Form
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField, FieldList
+from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField, FieldList, FormField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from game_recommender.models import User
 from flask_login import current_user
@@ -8,7 +8,7 @@ from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=5, max=20, message="Username must be between %(min)d and %(max)d characters long.")])
-    email = EmailField("Email", validators=[DataRequired(), Email()])
+    email = EmailField("Email", validators=[DataRequired(), Email(), Length(min=15, max=30, message="Email must be between %(min)d and %(max)d characters long.")])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=8, max=20)])
     confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password", message="Passwords do not match.")])
     submit = SubmitField("Sign Up")
@@ -50,7 +50,9 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError("That email is taken. Please choose a different one")
 
 
-class RecommenderFrom(FlaskForm):
+class RecommenderForm(FlaskForm):
     games = FieldList(StringField("Game Name", validators=[DataRequired()]), min_entries=5)
     submit = SubmitField("Recommend")
+
+
 
