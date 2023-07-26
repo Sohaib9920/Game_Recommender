@@ -13,7 +13,7 @@ def home():
     if form.validate_on_submit():
         user_ratings = {}
         for i in range(5): 
-            game_name = form.games[i].data.strip() # must strip as js validation ignoring trailing spaces and allow these values in payload
+            game_name = form.games[i].data.strip() # must strip as js validation ignore trailing spaces and allow these values in payload
             user_ratings[game_name] = FAVOURITE_RATING # JavaScript is used to validate valid names and avoid duplicates.
 
         recommendations = recommend_games(ubyi_norm_0, user_ratings, als)
