@@ -19,10 +19,10 @@ def recommend_games(ratings_df, user_ratings, als_model):
     Returns
     -------
     recommendations : list
-        A list of dictionaries representing the top 5 recommended games for the user, sorted by rating.
-        Each dictionary contains the rank and game name.
+        A list of top 5 recommended games for the user, sorted by rating.
 
     """
+    
     # Generate a new user ID and add the user_ratings to ratings_df
     new_user_id = ratings_df.index[-1] + 1
     ratings_df.loc[new_user_id] = 0
@@ -40,8 +40,7 @@ def recommend_games(ratings_df, user_ratings, als_model):
     
     # Recommend the top 5 games with the highest rating that the user has not played
     games_to_consider_mask = ratings_df.loc[new_user_id] == 0
-    top5_games = user_by_item_df.loc[new_user_id, games_to_consider_mask].sort_values(ascending=False)[:5].index.values
-    recommendations = [{"rank": idx+1, "game": game} for idx, game in enumerate(top5_games)]
+    recommendations = user_by_item_df.loc[new_user_id, games_to_consider_mask].sort_values(ascending=False)[:5].index.values
 
     return recommendations
 

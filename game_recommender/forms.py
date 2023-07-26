@@ -8,8 +8,8 @@ from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=5, max=20, message="Username must be between %(min)d and %(max)d characters long.")])
-    email = EmailField("Email", validators=[DataRequired(), Email(), Length(min=15, max=30, message="Email must be between %(min)d and %(max)d characters long.")])
-    password = PasswordField("Password", validators=[DataRequired(), Length(min=8, max=20)])
+    email = EmailField("Email", validators=[DataRequired(), Email(), Length(min=15, max=40, message="Email must be between %(min)d and %(max)d characters long.")])
+    password = PasswordField("Password", validators=[DataRequired(), Length(min=8, max=30, message="Password must be between %(min)d and %(max)d characters long.")])
     confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password", message="Passwords do not match.")])
     submit = SubmitField("Sign Up")
 
@@ -33,7 +33,7 @@ class LoginForm(FlaskForm):
 
 class UpdateAccountForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=5, max=20, message="Username must be between %(min)d and %(max)d characters long.")])
-    email = EmailField("Email", validators=[DataRequired(), Email()])
+    email = EmailField("Email", validators=[DataRequired(), Email(), Length(min=15, max=40, message="Email must be between %(min)d and %(max)d characters long.")])
     picture = FileField('Update Profile Picture:', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField("Update")
 

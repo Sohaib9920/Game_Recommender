@@ -6,7 +6,7 @@
     } 
   </style>
 
-  <div class="container" style="margin-top: 13vh;">
+  <div class="container" style="margin-top: 13vh;" id="main">
     <form method="POST" action="" onsubmit="return validateForm()">
     <div class="row">
 
@@ -19,8 +19,12 @@
               <!-- Present games -->
               {% for rating_object in game_ratings %}
               <div class="mb-3" id="input-{{ loop.index0 }}">
-                <input type="text" name="games-{{ loop.index0 }}", class="game_name form-control" list="gameNameList" value="{{ rating_object.game.title }}" placeholder="Game Name" required>
-                <input type="number" name="ratings-{{ loop.index0 }}", class="form-control mt-1" value="{{ rating_object.rating }}" min="0" max="10" placeholder="Rating (0-10)" required>
+                <input type="text" name="games-{{ loop.index0 }}", class="game_name form-control" list="gameNameList" 
+                value="{{ rating_object.game.title }}" placeholder="Game Name" autocomplete="off" required>
+
+                <input type="number" name="ratings-{{ loop.index0 }}", class="form-control mt-1" 
+                value="{{ rating_object.rating }}" min="0" max="10" placeholder="Rating (0-10)" autocomplete="off" required>
+                
                 <input type="button" class="btn btn-danger btn-sm mt-1" value="Delete" onclick="deleteGame('input-{{ loop.index0 }}')">
               </div>
               {% endfor %}
