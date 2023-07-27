@@ -1,10 +1,11 @@
-from flask import request, render_template, url_for, flash, redirect
+from flask import request, render_template, url_for, flash, redirect, session
 from game_recommender import app, db, bcrypt, ubyi_norm_0, als, game_names, FAVOURITE_RATING
 from game_recommender.forms import RecommenderForm, RegistrationForm, LoginForm, UpdateAccountForm
 from game_recommender.models import User, Rating, Game
 from game_recommender.recommend import recommend_games
 from flask_login import login_user, logout_user, login_required, current_user
 from game_recommender.utils import save_picture
+from game_recommender.recommend_users import recommend_users_by_common_games, recommend_users_by_similarity
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -22,6 +23,52 @@ def home():
     return render_template("recommender.html", title="Recommender", form=form)
 
 
+@app.route("/recommend_users")
+@login_required
+def recommend_users():
+    if current_user.ratings:
+        user_ratings = {}
+        for rating_object in current_user.ratings:
+            user_ratings[rating_object.game.title] = rating_object.rating
+
+        n_recommendations = 20
+        common_recommendations, common_top3 = recommend_users_by_common_games(ubyi_norm_0, user_ratings, n_recommendations)
+        similarity_recommendations, similarity_top3 = recommend_users_by_similarity(ubyi_norm_0, user_ratings, n_recommendations)
+
+        # Store the recommendations and top3 values in the session
+        session['common_recommendations'] = common_recommendations
+        session['common_top3'] = common_top3
+        session['similarity_recommendations'] = similarity_recommendations
+        session['similarity_top3'] = similarity_top3
+    else:
+        session['common_recommendations'] = None
+        session['common_top3'] = None
+        session['similarity_recommendations'] = None
+        session['similarity_top3'] = None
+
+    return render_template("recommend_users.html", title="Recommended Users")
+
+
+@app.route("/recommended_users/common")
+@login_required
+def recommended_users_common():
+    common_recommendations = session.get('common_recommendations')
+    common_top3 = session.get('common_top3')
+
+    return render_template("recommended_users_common.html", title="Recommended Users", 
+                           common_recommendations=common_recommendations, common_top3=common_top3)
+
+
+@app.route("/recommended_users/similarity")
+@login_required
+def recommended_users_similarity():
+    similarity_recommendations = session.get('similarity_recommendations')
+    similarity_top3 = session.get('similarity_top3')
+
+    return render_template("recommended_users_similarity.html", title="Recommended Users", 
+                           similarity_recommendations=similarity_recommendations, similarity_top3=similarity_top3)
+
+
 @app.route("/get_recommended_names", methods=["GET"])
 def get_recommended_names():
     return {"recommended_names": game_names}  
@@ -37,7 +84,7 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash("Your account has been created! You are now able to log in", "success") # Store list of flash messages in session at key: "_flashes"
+        flash("Your account has been created! You are now able to log in", "success") # Store list of flash messages in custom session by flask
         return redirect(url_for("login"))
         
     return render_template("register.html", title="Register", form=form)

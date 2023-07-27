@@ -23,6 +23,9 @@ def recommend_games(ratings_df, user_ratings, als_model):
 
     """
     
+    # copy the original ratings dataframe in order to avoid adding same user multiple times on multiple function calls
+    ratings_df = ratings_df.copy()
+
     # Generate a new user ID and add the user_ratings to ratings_df
     new_user_id = ratings_df.index[-1] + 1
     ratings_df.loc[new_user_id] = 0
