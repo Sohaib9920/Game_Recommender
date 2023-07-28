@@ -1,20 +1,58 @@
 {% extends "layout.html" %}
 {% block content %}
-  <style>
-    body {
-      background-color:black;
-    } 
-  </style>
+<style>
+  body {
+    background-color:black;
+  } 
+</style>
 
-  <div class="container" style="margin-top: 10vh;" id="main">
-    <div class="text-center mb-4 text-light">
-      <h1>Recommended Users by Common Games</h1>
+
+<div class="container text-light" style="margin-top: 10vh;" id="main">
+  <div class="text-center mb-5">
+    <h1>Recommended Users</h1>
+  </div>
+  
+  <!-- Pie charts -->
+  <div class="row mb-5">
+    <div class="col-md-6 text-center mb-5 mb-md-0">
+      <h4>Recommended Games by Users with highest Similarity</h4>
+      <canvas id="similarityPieChart"></canvas>
     </div>
-    <div class="row">
-        <div>
-            <a href="{{ url_for('recommended_users_common')}}" class="btn btn-primary mb-2">Recommend Users by Common Games</a>
-            <a href="{{ url_for('recommended_users_similarity')}}" class="btn btn-primary">Recommend Users by Similarity</a>
-        </div>     
+    <div class="col-md-6 text-center">
+      <h4>Recommended Games by Users with Common Games</h4>
+      <canvas id="commonPieChart"></canvas>
     </div>
   </div>
+  <!-- Recommendations Information -->
+  <div class="mb-4 text-md-center fs-4 fw-bold">
+    <p>You can check these top 20 users and their most favorite games, which you have not played, as recommendations here:</p>
+  </div>
+  <!-- Recommendation Buttons -->
+  <!-- Use forms for hidden payload submission -->
+  <div class="row mb-5 text-center">
+    <div class="col-md-6">
+      <form action="{{ url_for('recommended_users_similarity') }}" method="POST">
+        <input type="hidden" name="recommendation_type" value="similarity">
+        <input type="submit" class="btn btn-outline-light update-button mb-2 large-button" value="Recommend Users by Rating Similarity">
+      </form>
+    </div>
+    <div class="col-md-6">
+      <form action="{{ url_for('recommended_users_common') }}" method="POST">
+        <input type="hidden" name="recommendation_type" value="common">
+        <input type="submit" class="btn btn-outline-light update-button large-button" value="Recommend Users by Common Games">
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Template is rendered and sent by server while JS runs on client side -->
+<!-- We can render the data into JS that will run -->
+<script>
+  const common_top5 = JSON.parse('{{ common_top5|tojson|safe }}')
+  const similarity_top5 = JSON.parse('{{ similarity_top5|tojson|safe }}')
+</script>
+<!-- Using chart.js libray -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Creating chart -->
+<script src="{{ url_for('static', filename='make_chart.js')}}"></script>
 {% endblock %}

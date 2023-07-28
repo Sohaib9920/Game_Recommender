@@ -22,7 +22,7 @@ def recommend_users_by_similarity(ratings_df, user_ratings, n):
             - list: A list of dictionaries containing the recommended users and their similarity percentages. Each dictionary has the keys:
                     - "similarity" (float): The similarity percentage (ranging from 0 to 100) of the recommended user with the new user.
                     - "recommended_games" (list): A list of up to 5 game names that the recommended user has highly rated and the new user has not played yet.
-            - list: A list of tuples containing the three most common recommended game names among all the recommended users along with their respective frequencies.
+            - list: A list of tuples containing the five most common recommended game names among all the recommended users along with their respective frequencies.
 
     Example:
         ratings_df = ...  # Your existing DataFrame with user ratings
@@ -59,9 +59,9 @@ def recommend_users_by_similarity(ratings_df, user_ratings, n):
 
     # Find 3 most common games among the recommendations
     game_counts = Counter(recommendations_list)
-    top3 = game_counts.most_common(3)
+    top5 = game_counts.most_common(5)
     
-    return recommendations, top3
+    return recommendations, top5
 
 
 def recommend_users_by_common_games(ratings_df, user_ratings, n):
@@ -78,7 +78,7 @@ def recommend_users_by_common_games(ratings_df, user_ratings, n):
             - list: A list of dictionaries containing the recommended users and the number of common games played with the new user. Each dictionary has the keys:
                     - "n_common_games" (int): The number of common games played by the recommended user with the new user.
                     - "recommended_games" (list): A list of up to 5 game names that the recommended user has highly rated and the new user has not played yet.
-            - list: A list of tuples containing the three most common recommended game names among all the recommended users along with their respective frequencies.
+            - list: A list of tuples containing the five most common recommended game names among all the recommended users along with their respective frequencies.
 
     Example:
         ratings_df = ...  # Your existing DataFrame with user ratings
@@ -115,6 +115,6 @@ def recommend_users_by_common_games(ratings_df, user_ratings, n):
 
     # Find 3 most common games among the recommendations
     game_counts = Counter(recommendations_list)
-    top3 = game_counts.most_common(3)
+    top5 = game_counts.most_common(5)
     
-    return recommendations, top3
+    return recommendations, top5

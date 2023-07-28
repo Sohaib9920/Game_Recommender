@@ -17,7 +17,7 @@ def home():
             game_name = form.games[i].data.strip() # must strip as js validation ignore trailing spaces and allow these values in payload
             user_ratings[game_name] = FAVOURITE_RATING # JavaScript is used to validate valid names and avoid duplicates.
 
-        recommendations = recommend_games(ubyi_norm_0, user_ratings, als)
+        recommendations = recommend_games(ubyi_norm_0, user_ratings, als) # this function do not alter original dataframe
         return render_template("recommendations.html", title="Recommendations", recommendations=recommendations)
     
     return render_template("recommender.html", title="Recommender", form=form)
@@ -32,41 +32,37 @@ def recommend_users():
             user_ratings[rating_object.game.title] = rating_object.rating
 
         n_recommendations = 20
-        common_recommendations, common_top3 = recommend_users_by_common_games(ubyi_norm_0, user_ratings, n_recommendations)
-        similarity_recommendations, similarity_top3 = recommend_users_by_similarity(ubyi_norm_0, user_ratings, n_recommendations)
+        # The following functions do not alter original dataframe
+        common_recommendations, common_top5 = recommend_users_by_common_games(ubyi_norm_0, user_ratings, n_recommendations)
+        similarity_recommendations, similarity_top5 = recommend_users_by_similarity(ubyi_norm_0, user_ratings, n_recommendations)
 
-        # Store the recommendations and top3 values in the session
+        # Store the recommendations and top5 values in the session
         session['common_recommendations'] = common_recommendations
-        session['common_top3'] = common_top3
+        session['common_top5'] = common_top5
         session['similarity_recommendations'] = similarity_recommendations
-        session['similarity_top3'] = similarity_top3
+        session['similarity_top5'] = similarity_top5
     else:
-        session['common_recommendations'] = None
-        session['common_top3'] = None
-        session['similarity_recommendations'] = None
-        session['similarity_top3'] = None
+        flash("Please add games to your Gamer Profile first", "danger")
+        return redirect(url_for("profile"))
+    return render_template("recommend_users.html", title="Recommend Users", common_top5=common_top5, similarity_top5=similarity_top5)
 
-    return render_template("recommend_users.html", title="Recommended Users")
+# In order to make sure that recommended_users routes are accessed AFTER visiting recommend_users route,
+# We make forms for each button for each route and use POST request to access these routes
 
-
-@app.route("/recommended_users/common")
+@app.route("/recommended_users/common", methods=["POST"]) 
 @login_required
 def recommended_users_common():
     common_recommendations = session.get('common_recommendations')
-    common_top3 = session.get('common_top3')
-
     return render_template("recommended_users_common.html", title="Recommended Users", 
-                           common_recommendations=common_recommendations, common_top3=common_top3)
+                           common_recommendations=common_recommendations)
 
 
-@app.route("/recommended_users/similarity")
+@app.route("/recommended_users/similarity", methods=["POST"])
 @login_required
 def recommended_users_similarity():
     similarity_recommendations = session.get('similarity_recommendations')
-    similarity_top3 = session.get('similarity_top3')
-
     return render_template("recommended_users_similarity.html", title="Recommended Users", 
-                           similarity_recommendations=similarity_recommendations, similarity_top3=similarity_top3)
+                           similarity_recommendations=similarity_recommendations)
 
 
 @app.route("/get_recommended_names", methods=["GET"])
@@ -133,7 +129,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).limit(10).all()
+    game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).all()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template("account.html", title="Account", image_file=image_file, form=form, game_ratings=game_ratings)
     
@@ -153,16 +149,13 @@ def profile():
                 game_name = value.strip() # must be striped as JS validation allows unstriped value of game name
                 rating = int(request.form.get(f"ratings-{key.split('-')[1]}")) # make sure that the rating is integer
                 
-                print(f'-{game_name}-')
-                print(type(rating))
-
                 # Add new ratings objects to user
                 game_object = game_mapping.get(game_name) # JS validation makes sure that game_object for input game name exits
                 rating_object = Rating(user = current_user, game = game_object, rating = rating)
-                db.session.add(rating_object)
+                db.session.add(rating_object) 
         
         db.session.commit()
-        return redirect(url_for("profile"))
+        return redirect(url_for("account"))
 
     # Render the tempelate with values of game names and ratings inserted so that we could re submit them (after updating) in post request       
     game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).all()
