@@ -1,11 +1,11 @@
 from game_recommender import app, db, ubyi_norm_0
 from game_recommender.models import User, Game, Rating
 
-## Drop all tables if existed ##
+# # Drop all tables if existed ##
 # with app.app_context():
 #     db.drop_all()
 
-## Create database tables ## 
+# # Create database tables ## 
 # with app.app_context():
 #     db.create_all()
 
@@ -15,7 +15,7 @@ from game_recommender.models import User, Game, Rating
 # .schema
 
 
-## Adding game names to 'game' table ##
+# # Adding game names to 'game' table ##
 # with app.app_context():
 #     for title in ubyi_norm_0.columns:
 #         game = Game(title=title)

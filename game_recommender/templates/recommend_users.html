@@ -8,35 +8,35 @@
 
 
 <div class="container text-light" style="margin-top: 10vh;" id="main">
-  <div class="text-center mb-5">
+  <div class="text-center mb-5 sr-slide-top">
     <h1>Recommended Users</h1>
   </div>
   
   <!-- Pie charts -->
   <div class="row mb-5">
     <div class="col-md-6 text-center mb-5 mb-md-0">
-      <h4>Recommended Games by Users with highest Similarity</h4>
-      <canvas id="similarityPieChart"></canvas>
+      <h4 class="sr-slide-left">Recommended Games by Users with highest Similarity</h4>
+      <canvas id="similarityPieChart" class="sr-slide-bottom"></canvas>
     </div>
     <div class="col-md-6 text-center">
-      <h4>Recommended Games by Users with Common Games</h4>
-      <canvas id="commonPieChart"></canvas>
+      <h4 class="sr-slide-right">Recommended Games by Users with Common Games</h4>
+      <canvas id="commonPieChart" class="sr-slide-bottom"></canvas>
     </div>
   </div>
   <!-- Recommendations Information -->
-  <div class="mb-4 text-md-center fs-4 fw-bold">
+  <div class="mb-4 text-md-center fs-4 fw-bold sr-slide-bottom">
     <p>You can check these top 20 users and their most favorite games, which you have not played, as recommendations here:</p>
   </div>
   <!-- Recommendation Buttons -->
   <!-- Use forms for hidden payload submission -->
   <div class="row mb-5 text-center">
-    <div class="col-md-6">
+    <div class="col-md-6 sr-slide-left">
       <form action="{{ url_for('recommended_users_similarity') }}" method="POST">
         <input type="hidden" name="recommendation_type" value="similarity">
         <input type="submit" class="btn btn-outline-light update-button mb-2 large-button" value="Recommend Users by Rating Similarity">
       </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 sr-slide-right">
       <form action="{{ url_for('recommended_users_common') }}" method="POST">
         <input type="hidden" name="recommendation_type" value="common">
         <input type="submit" class="btn btn-outline-light update-button large-button" value="Recommend Users by Common Games">

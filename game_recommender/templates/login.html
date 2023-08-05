@@ -18,7 +18,7 @@
                 <h1 class="mb-4 sr-slide-top">Login</h1>
                 <form action="" method="POST">
                     {{ form.csrf_token }}
-                    <div class="mb-3 sr-slide-right">
+                    <div class="mb-3 sr-slide-top">
                         {% if form.email.errors %}
                             {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
@@ -30,7 +30,7 @@
                             {{ form.email(class="form-control", placeholder=form.email.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
-                    <div class="mb-3 sr-slide-right">
+                    <div class="mb-3 sr-slide-top">
                         {% if form.password.errors %}
                             {{ form.password(class="form-control is-invalid", placeholder=form.password.label.text) }}
                             <div class="invalid-feedback">

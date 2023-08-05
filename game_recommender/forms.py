@@ -1,6 +1,6 @@
-from flask_wtf import FlaskForm, Form
+from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField, FieldList, FormField, IntegerField
+from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField, FieldList
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from game_recommender.models import User
 from flask_login import current_user

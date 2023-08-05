@@ -4,8 +4,15 @@ from game_recommender.forms import RecommenderForm, RegistrationForm, LoginForm,
 from game_recommender.models import User, Rating, Game
 from game_recommender.recommend import recommend_games
 from flask_login import login_user, logout_user, login_required, current_user
-from game_recommender.utils import save_picture, send_reset_message
+from game_recommender.utils import save_picture, send_reset_message, add_db_users
 from game_recommender.recommend_users import recommend_users_by_common_games, recommend_users_by_similarity
+
+# Getting the last user id in initail dataframe when no new user from database is added
+df_last_id = ubyi_norm_0.index[-1]
+
+# Insert user ratings from database into dataframe
+with app.app_context():
+    add_db_users(ubyi_norm_0)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -142,7 +149,10 @@ def profile():
         game_mapping = {game_object.title : game_object for game_object in Game.query.all()}
 
         # It is easier to initailly remove all the ratings of user and then re-add them at once after both updating existing games and inserting new games
-        current_user.ratings = []
+        Rating.query.filter_by(user=current_user).delete()
+        # Also initially remove the ratings of current user from dataframe
+        df_user_id = df_last_id + current_user.id 
+        ubyi_norm_0.loc[df_user_id] = 0
 
         for key, value in request.form.items():
             if key.startswith("games-"):
@@ -153,6 +163,8 @@ def profile():
                 game_object = game_mapping.get(game_name) # JS validation makes sure that game_object for input game name exits
                 rating_object = Rating(user = current_user, game = game_object, rating = rating)
                 db.session.add(rating_object) 
+                # Add new user ratings to dataframe
+                ubyi_norm_0.at[df_user_id, game_name] = rating
         
         db.session.commit()
         return redirect(url_for("account"))

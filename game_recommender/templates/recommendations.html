@@ -17,8 +17,8 @@
     <div class="row min-vh-100 justify-content-end align-items-center">
       <div class="col-lg-5 text-center recommend-container">
 
-        <h1 class="mb-4" style="color: #da252b;">Recommendations</h1>
-        <table class="table" style="border-color: #da252b;">
+        <h1 class="mb-4 sr-slide-right" style="color: #da252b;">Recommendations</h1>
+        <table class="table sr-fade" style="border-color: #da252b;">
           <tbody>
             {% for recommendation in recommendations %}
             <tr>
@@ -31,7 +31,7 @@
             {% endfor %}
           </tbody>
         </table>
-        <div class="pt-3">
+        <div class="pt-3 sr-fade">
           <a href="{{ url_for('home') }}" class="btn">New Recommendation</a>
         </div>
 
