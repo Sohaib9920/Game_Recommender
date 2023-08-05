@@ -6,13 +6,12 @@ from game_recommender.matrix_factorization import ExplicitMF
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_session import Session
+from flask_mail import Mail
+from game_recommender.config import Config
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") # make using secrets.token_hex(16)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem" # store session data in server filesystem
+app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -20,7 +19,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login" # Specify where to redirect when login is required
 login_manager.login_message_category = "info"
 Session(app) # initializes the session functionality in the Flask app
-
+mail = Mail(app)
 
 data_file_path = os.path.join(app.root_path, "ubyi_norm_0.csv")
 

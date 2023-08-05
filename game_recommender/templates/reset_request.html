@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
+    <div class="container" id="main">
+        <div class="row min-vh-100 justify-content-center align-items-center">
+            <div class="col-lg-6 text-center login-container">
+                <h1 class="mb-4">Reset Password</h1>
+                <form action="" method="POST">
+                    {{ form.csrf_token }}
+                    <div class="mb-3">
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
+                            <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control", placeholder=form.email.label.text, autocomplete="off") }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-2">
+                        {{ form.submit(class="btn", style="width:auto") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

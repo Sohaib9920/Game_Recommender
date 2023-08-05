@@ -20,7 +20,7 @@
                     {{ form.csrf_token }}
                     <div class="mb-3">
                         {% if form.email.errors %}
-                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text) }}
+                            {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
                             {% for error in form.email.errors %}
                                 <span>{{ error }}</span>
@@ -47,7 +47,7 @@
                             {{ form.remember(class="form-check-input")}}{{ form.remember.label(class="form-check-label text-muted")}}
                         </div>
                         <div>
-                            <a href="#" class="text-muted">Forgot Password?</a>
+                            <a href="{{ url_for('reset_request') }}" class="text-muted">Forgot Password?</a>
                         </div>
                     </div>
                     <div class="mb-2">

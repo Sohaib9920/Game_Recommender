@@ -43,10 +43,6 @@ from game_recommender.models import User, Game, Rating
 #     print(User.query.first())
 
 
-## Add second user, use query:
-# INSERT INTO users (username, email, image_file, password) VALUES ("Ammar543", "kimono_007@gamil.com", "default.jpg", "ammar5680");
-
-
 # # Adding user ratings and games
 # username="Sohaib123"
 # game_list = {"Dota 2": 9, "BioShock": 7, "Dishonored":8, "Dark Souls Prepare to Die Edition":9, "The Witcher 3 Wild Hunt": 10}
@@ -61,7 +57,6 @@ from game_recommender.models import User, Game, Rating
     
 #     db.session.commit()
 #     print(Rating.query.all())
-
 
 
 ### Miscelleous:

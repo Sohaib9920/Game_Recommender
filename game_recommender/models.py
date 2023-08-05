@@ -1,5 +1,7 @@
-from game_recommender import db, login_manager
+from game_recommender import db, login_manager, app
 from flask_login import UserMixin
+from itsdangerous.url_safe import URLSafeTimedSerializer as TimedSerializer
+
 
 
 @login_manager.user_loader
@@ -8,6 +10,9 @@ def load_user(user_id): # This function is required in order to reload the user 
 
 # One user can have multiple games and one game can have multiple users so we have many-to-many relationship. 
 # For this reason, 'ratings' table is used whcih have many-to-many relationship between users and games as well as one-to-one relationship with ratings
+
+# flask_login extension expects the User model to have certain methods: 1) is_authenticated 2) is_active 3) is_anonymous 4) get_id
+# We can inherent from UserMixin class to add all of these
 
 class User(db.Model, UserMixin): 
     __tablename__ = 'users'
@@ -20,7 +25,22 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"<User: {self.username}>"
     
+    # Methods for handling timed tokens for password reset
+    def get_reset_token(self):
+        s = TimedSerializer(app.config["SECRET_KEY"])
+        token = s.dumps({"user_id": self.id}) # Dump the payload into serializer
+        return token
+    
+    @staticmethod
+    def verify_reset_token(token, expire_sec=1800):
+        s = TimedSerializer(app.config["SECRET_KEY"])
+        try:
+            user_id = s.loads(token, max_age=expire_sec)["user_id"]
+        except:
+            return None
+        return User.query.get(user_id)
 
+    
 class Game(db.Model):
     __tablename__ = "games"
     id = db.Column(db.Integer, primary_key=True)
