@@ -15,10 +15,10 @@
     <div class="container" id="main">
         <div class="row min-vh-100 justify-content-end align-items-center align-items-lg-end">
             <div class="col-lg-5 px-xl-5 pb-lg-5 mb-lg-5 me-lg-5 text-center login-container">
-                <h1 class="mb-4">Login</h1>
+                <h1 class="mb-4 sr-slide-top">Login</h1>
                 <form action="" method="POST">
                     {{ form.csrf_token }}
-                    <div class="mb-3">
+                    <div class="mb-3 sr-slide-right">
                         {% if form.email.errors %}
                             {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
@@ -30,7 +30,7 @@
                             {{ form.email(class="form-control", placeholder=form.email.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 sr-slide-right">
                         {% if form.password.errors %}
                             {{ form.password(class="form-control is-invalid", placeholder=form.password.label.text) }}
                             <div class="invalid-feedback">
@@ -42,7 +42,7 @@
                             {{ form.password(class="form-control", placeholder=form.password.label.text) }}
                         {% endif %}
                     </div>
-                    <div class="d-flex justify-content-between mb-4">
+                    <div class="d-flex justify-content-between mb-4 sr-slide-bottom">
                         <div class="form-check">
                             {{ form.remember(class="form-check-input")}}{{ form.remember.label(class="form-check-label text-muted")}}
                         </div>
@@ -50,13 +50,15 @@
                             <a href="{{ url_for('reset_request') }}" class="text-muted">Forgot Password?</a>
                         </div>
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-2 sr-fade">
                         {{ form.submit(class="btn") }}
                     </div>
                 </form>
+                <div class="sr-slide-bottom">
                 <small class="text-muted align-top">
                     Dont Have An Account? <a href="{{ url_for('register') }}">Register</a> 
                 </small>
+                </div>
             </div>
         </div>
     </div>

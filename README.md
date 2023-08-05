@@ -3,10 +3,6 @@ Game Recommender is a web application that helps users discover new games based 
 It utilizes Matrix Factorization as a recommendation engine and uses user data from the Steam platform. 
 The application asks users to provide their three favorite games along with ratings, and based on this input, it recommends five games that the user might enjoy.
 
-![Recommender](./Recommender.JPG)
-
-![Recommendations](./Recommendations.JPG)
-
 ## Specification
 
 The recommendation engine in Game Recommender is built using Matrix Factorization. 

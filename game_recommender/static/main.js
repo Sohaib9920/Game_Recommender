@@ -1,3 +1,21 @@
+// SCROLL REVEAL
+
+// Initialize ScrollReveal
+const sr = ScrollReveal({
+  reset: true,
+  distance: "80px",
+  duration: 2000,
+  delay: 10,
+});
+
+// Apply individual reveal effects
+sr.reveal(".sr-slide-left", { origin: "left" });
+sr.reveal(".sr-slide-right", { origin: "right" });
+sr.reveal(".sr-slide-top", { origin: "top" });
+sr.reveal(".sr-slide-bottom", { origin: "bottom" });
+sr.reveal(".sr-fade", { origin: "bottom", distance: "0px", delay: 500});
+
+
 /// WE REQUIRE DATA OF VALID GAME NAMES FOR FORM VALIDATION AS WELL AS DATALIST IN TEMPELATE FOR VALID NAMES RECOMMENDATIONS.
 /// IT CAN BE DONE IN TWO WAYS:
 /// 1) Use fetch API to get game_names from a route (AJAX) and then use it to create datalist using JS

@@ -15,18 +15,17 @@
 
   <div class="container" data-template="recommender" id="main">
     <div class="row min-vh-100 justify-content-start align-items-center">
-      <div class="col-lg-4 pb-lg-5 text-center game-container ">
-
-        <h1 class="mb-4">Game Recommender</h1>
+      <div class="col-lg-4 pb-lg-5 text-center game-container">
+        <h1 class="mb-4 sr-slide-left">Game Recommender</h1>
         <form method="POST" onsubmit="return validateForm()"> 
           <!-- Need to return. Otherwise function runs but its output is not used to stop form submission-->
           {{ form.csrf_token }}
           {% for field in form.games %}
-            <div class="mb-3">
+            <div class="mb-3 sr-slide-right">
               {{ field(class="game_name form-control", list="gameNameList", autocomplete="off", placeholder="Favourite Game " + loop.index|string) }}
             </div>
           {% endfor %}
-          <div class="text-lg-start pt-2">
+          <div class="text-lg-start pt-2 sr-fade">
             {{ form.submit(class="btn") }}
           </div>
           <!-- Datalist element for autocomplete -->
@@ -34,7 +33,6 @@
             <!-- Recommended game names will be added here -->
           </datalist>
         </form>
-
       </div>
     </div>
   </div>

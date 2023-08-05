@@ -15,10 +15,10 @@
     <div class="container" id="main">
         <div class="row min-vh-100 justify-content-end align-items-center">
             <div class="col-lg-5 px-xl-5 text-center register-container">
-                <h1 class="mb-4">Register</h1>
+                <h1 class="mb-4 sr-slide-top">Register</h1>
                 <form action="" method="POST">
                     {{ form.csrf_token }}
-                    <div class="mb-3">
+                    <div class="mb-3 sr-slide-right">
                         {% if form.username.errors %}
                             {{ form.username(class="form-control is-invalid", placeholder=form.username.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
@@ -30,7 +30,7 @@
                             {{ form.username(class="form-control", placeholder=form.username.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 sr-slide-right">
                         {% if form.email.errors %}
                             {{ form.email(class="form-control is-invalid", placeholder=form.email.label.text, autocomplete="off") }}
                             <div class="invalid-feedback">
@@ -42,7 +42,7 @@
                             {{ form.email(class="form-control", placeholder=form.email.label.text, autocomplete="off") }}
                         {% endif %}
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 sr-slide-right">
                         {% if form.password.errors %}
                             {{ form.password(class="form-control is-invalid", placeholder=form.password.label.text) }}
                             <div class="invalid-feedback">
@@ -54,7 +54,7 @@
                             {{ form.password(class="form-control", placeholder=form.password.label.text) }}
                         {% endif %}
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 sr-slide-right">
                         {% if form.confirm_password.errors %}
                             {{ form.confirm_password(class="form-control is-invalid", placeholder=form.confirm_password.label.text) }}
                             <div class="invalid-feedback">
@@ -66,11 +66,11 @@
                             {{ form.confirm_password(class="form-control", placeholder=form.confirm_password.label.text) }}
                         {% endif %}
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 sr-fade">
                         {{ form.submit(class="btn btn-dark mt-2") }}
                     </div>
                 </form>
-                <div >
+                <div class="sr-slide-bottom">
                     <small class="text-muted">Already Have An Account? <a href="{{ url_for('login') }}">Sign In</a> </small>
                 </div>
             </div>
