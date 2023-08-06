@@ -26,9 +26,9 @@ def home():
             user_ratings[game_name] = FAVOURITE_RATING # JavaScript is used to validate valid names and avoid duplicates.
 
         recommendations = recommend_games(ubyi_norm_0, user_ratings, als) # this function do not alter original dataframe
-        return render_template("recommendations.html", title="Recommendations", recommendations=recommendations)
+        return render_template("recommend_games/recommendations.html", title="Recommendations", recommendations=recommendations)
     
-    return render_template("recommender.html", title="Recommender", form=form)
+    return render_template("recommend_games/recommender.html", title="Recommender", form=form)
 
 
 @app.route("/recommend_users")
@@ -52,7 +52,7 @@ def recommend_users():
     else:
         flash("Please add games to your Gamer Profile first", "danger")
         return redirect(url_for("profile"))
-    return render_template("recommend_users.html", title="Recommend Users", common_top5=common_top5, similarity_top5=similarity_top5)
+    return render_template("recommend_users/recommend_users.html", title="Recommend Users", common_top5=common_top5, similarity_top5=similarity_top5)
 
 # In order to make sure that recommended_users routes are accessed AFTER visiting recommend_users route,
 # We make forms for each button for each route and use POST request to access these routes
@@ -61,7 +61,7 @@ def recommend_users():
 @login_required
 def recommended_users_common():
     common_recommendations = session.get('common_recommendations')
-    return render_template("recommended_users_common.html", title="Recommended Users", 
+    return render_template("recommend_users/recommended_users_common.html", title="Recommended Users", 
                            common_recommendations=common_recommendations)
 
 
@@ -69,7 +69,7 @@ def recommended_users_common():
 @login_required
 def recommended_users_similarity():
     similarity_recommendations = session.get('similarity_recommendations')
-    return render_template("recommended_users_similarity.html", title="Recommended Users", 
+    return render_template("recommend_users/recommended_users_similarity.html", title="Recommended Users", 
                            similarity_recommendations=similarity_recommendations)
 
 
@@ -91,7 +91,7 @@ def register():
         flash("Your account has been created! You are now able to log in", "success") # Store list of flash messages in custom session by flask
         return redirect(url_for("login"))
         
-    return render_template("register.html", title="Register", form=form)
+    return render_template("user_authentication/register.html", title="Register", form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -109,7 +109,7 @@ def login():
         else:
             flash("Login Unsuccessful. Please check your email and password.", "danger")
         
-    return render_template("login.html", title="Login", form=form)
+    return render_template("user_authentication/login.html", title="Login", form=form)
 
 
 @app.route("/logout")
@@ -139,7 +139,7 @@ def account():
 
     game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).all()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template("account.html", title="Account", image_file=image_file, form=form, game_ratings=game_ratings)
+    return render_template("user_info/account.html", title="Account", image_file=image_file, form=form, game_ratings=game_ratings)
     
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -172,7 +172,7 @@ def profile():
 
     # Render the tempelate with values of game names and ratings inserted so that we could re submit them (after updating) in post request       
     game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).all()
-    return render_template("profile.html", title="Profile", game_ratings=game_ratings)
+    return render_template("user_info/profile.html", title="Profile", game_ratings=game_ratings)
 
 
 @app.route("/reset_password", methods=["GET", "POST"])
@@ -190,7 +190,7 @@ def reset_request():
         flash("An email has been sent with instructions to reset your password.", "info")
         return redirect(url_for("login"))
     
-    return render_template("reset_request.html", title="Reset Password", form=form)
+    return render_template("user_authentication/reset_request.html", title="Reset Password", form=form)
 
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_token(token):
@@ -207,5 +207,5 @@ def reset_token(token):
         db.session.commit()
         flash("Your password has been updated! You are now able to log in", "success") 
         return redirect(url_for("login"))
-    return render_template("reset_token.html", title="Reset Password", form = form)
+    return render_template("user_authentication/reset_token.html", title="Reset Password", form = form)
 
