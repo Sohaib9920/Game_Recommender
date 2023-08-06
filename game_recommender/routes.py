@@ -6,6 +6,7 @@ from game_recommender.recommend import recommend_games
 from flask_login import login_user, logout_user, login_required, current_user
 from game_recommender.utils import save_picture, send_reset_message, add_db_users
 from game_recommender.recommend_users import recommend_users_by_common_games, recommend_users_by_similarity
+import threading
 
 # Getting the last user id in initail dataframe when no new user from database is added
 df_last_id = ubyi_norm_0.index[-1]
@@ -181,7 +182,11 @@ def reset_request():
     form = ResetRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        send_reset_message(user)
+        token = user.get_reset_token()
+        url = url_for("reset_token", token=token, _external=True)
+        # Using threading to send email asynchronously and avoid timeout error
+        email_thread = threading.Thread(target=send_reset_message, args=(user, url, app))
+        email_thread.start()
         flash("An email has been sent with instructions to reset your password.", "info")
         return redirect(url_for("login"))
     

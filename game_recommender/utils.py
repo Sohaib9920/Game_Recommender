@@ -26,20 +26,17 @@ def save_picture(form_picture):
     i.save(picture_path) 
     return picture_filename
 
-def send_reset_message(user):
-    # Create a token for this user which will be valid for default 30 min
-    token = user.get_reset_token()
-    subject = "Password Reset Request"
-    sender = "sohaib9920.ahmed@gmail.com"
-    recipients = [user.email]
-    body = f"""To reset your password, visit the following link:
-{url_for("reset_token", token=token, _external=True)}
+def send_reset_message(user, url, app):
+    with app.app_context():
+        subject = "Password Reset Request"
+        sender = "no-reply@GamerInsight.com"
+        recipients = [user.email]
+        body = f"""To reset your password, visit the following link:
+{url}
 If you did not make this request then simply ignore this email and no changes will be made.
 """
-    # _external to get fixed url. No indent in doc string because thay will be included in email
-    message = Message(subject=subject, sender=sender, recipients=recipients, body=body)
-    # Send the message
-    mail.send(message)
+        message = Message(subject=subject, sender=sender, recipients=recipients, body=body)
+        mail.send(message)
 
 
 def add_db_users(current_users_df):
