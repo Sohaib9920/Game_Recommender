@@ -1,7 +1,7 @@
 import pandas as pd 
 import numpy as np
 
-def recommend_games(ratings_df, user_ratings, als_model):
+def recommend(ratings_df, user_ratings, als_model):
     """
     Recommends games to a user based on their ratings and a matrix factorization model.
 

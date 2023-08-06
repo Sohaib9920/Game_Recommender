@@ -16,7 +16,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = "login" # Specify where to redirect when login is required
+login_manager.login_view = "user_authentication.login" # Specify where to redirect when login is required
 login_manager.login_message_category = "info"
 Session(app) # initializes the session functionality in the Flask app
 mail = Mail(app)
@@ -28,8 +28,24 @@ ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)
 als = ExplicitMF(n_iters=5, n_factors=20, reg=0.01)
 game_names = ubyi_norm_0.columns.values.tolist()
 FAVOURITE_RATING = 7
+df_last_id = ubyi_norm_0.index[-1]
 
-from game_recommender import routes
+# add_db_users() requires Rating object from model first which first requires app, db and login_manager 
+# from this module so app, and login_manager should be defined first in order to avoid circular import
+from game_recommender.utils import add_db_users
+with app.app_context():
+    add_db_users(ubyi_norm_0) # Insert user ratings from database into dataframe
+
+from game_recommender.recommend_games.routes import recommend_games
+from game_recommender.recommend_users.routes import recommend_users
+from game_recommender.user_authentication.routes import user_authentication
+from game_recommender.user_info.routes import user_info
+
+app.register_blueprint(recommend_games)
+app.register_blueprint(recommend_users)
+app.register_blueprint(user_authentication)
+app.register_blueprint(user_info)
+
 
 ## Explanation of Matrix Factorization for Recommender Systems ##
 

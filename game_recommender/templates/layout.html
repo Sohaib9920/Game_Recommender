@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
         <div class="container">
             <!-- Brand Logo -->
-            <a href="{{ url_for('home') }}" class="navbar-brand me-4">Gamer Insight</a>
+            <a href="{{ url_for('recommend_games.home') }}" class="navbar-brand me-4">Gamer Insight</a>
 
             <!-- Responsive Toggler Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -35,10 +35,10 @@
                 <!-- me-auto will take all the available space for margin at right -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a href="{{ url_for('home') }}" class="nav-link">Recommend Games</a>
+                        <a href="{{ url_for('recommend_games.home') }}" class="nav-link">Recommend Games</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('recommend_users') }}" class="nav-link">Recommend Users</a>
+                        <a href="{{ url_for('recommend_users.home') }}" class="nav-link">Recommend Users</a>
                     </li>
                 </ul>
 
@@ -46,20 +46,20 @@
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{{ url_for('account') }}" class="nav-link">Account</a>
+                        <a href="{{ url_for('user_info.account') }}" class="nav-link">Account</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('profile') }}" class="nav-link">Profile</a>
+                        <a href="{{ url_for('user_info.profile') }}" class="nav-link">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+                        <a href="{{ url_for('user_authentication.logout') }}" class="nav-link">Logout</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+                        <a href="{{ url_for('user_authentication.login') }}" class="nav-link">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('register') }}" class="nav-link">Register</a>
+                        <a href="{{ url_for('user_authentication.register') }}" class="nav-link">Register</a>
                     </li>
                     {% endif %}
                 </ul>

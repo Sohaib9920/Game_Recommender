@@ -35,13 +35,13 @@
   <!-- Use forms for hidden payload submission -->
   <div class="row mb-5 text-center">
     <div class="col-md-6 sr-slide-left">
-      <form action="{{ url_for('recommended_users_similarity') }}" method="POST">
+      <form action="{{ url_for('recommend_users.users_similarity') }}" method="POST">
         <input type="hidden" name="recommendation_type" value="similarity">
         <input type="submit" class="btn btn-outline-light update-button mb-2 large-button" value="Recommend Users by Rating Similarity">
       </form>
     </div>
     <div class="col-md-6 sr-slide-right">
-      <form action="{{ url_for('recommended_users_common') }}" method="POST">
+      <form action="{{ url_for('recommend_users.users_common') }}" method="POST">
         <input type="hidden" name="recommendation_type" value="common">
         <input type="submit" class="btn btn-outline-light update-button large-button" value="Recommend Users by Common Games">
       </form>

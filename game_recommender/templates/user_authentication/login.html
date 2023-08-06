@@ -47,7 +47,7 @@
                             {{ form.remember(class="form-check-input")}}{{ form.remember.label(class="form-check-label text-muted")}}
                         </div>
                         <div>
-                            <a href="{{ url_for('reset_request') }}" class="text-muted">Forgot Password?</a>
+                            <a href="{{ url_for('user_authentication.reset_request') }}" class="text-muted">Forgot Password?</a>
                         </div>
                     </div>
                     <div class="mb-2 sr-fade">
@@ -56,7 +56,7 @@
                 </form>
                 <div class="sr-slide-bottom">
                 <small class="text-muted align-top">
-                    Dont Have An Account? <a href="{{ url_for('register') }}">Register</a> 
+                    Dont Have An Account? <a href="{{ url_for('user_authentication.register') }}">Register</a> 
                 </small>
                 </div>
             </div>
