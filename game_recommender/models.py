@@ -1,4 +1,5 @@
-from game_recommender import db, login_manager, app
+from flask import current_app
+from game_recommender import db, login_manager
 from flask_login import UserMixin
 from itsdangerous.url_safe import URLSafeTimedSerializer as TimedSerializer
 
@@ -27,13 +28,13 @@ class User(db.Model, UserMixin):
     
     # Methods for handling timed tokens for password reset
     def get_reset_token(self):
-        s = TimedSerializer(app.config["SECRET_KEY"])
+        s = TimedSerializer(current_app.config["SECRET_KEY"])
         token = s.dumps({"user_id": self.id}) # Dump the payload into serializer
         return token
     
     @staticmethod
     def verify_reset_token(token, expire_sec=1800):
-        s = TimedSerializer(app.config["SECRET_KEY"])
+        s = TimedSerializer(current_app.config["SECRET_KEY"])
         try:
             user_id = s.loads(token, max_age=expire_sec)["user_id"]
         except:

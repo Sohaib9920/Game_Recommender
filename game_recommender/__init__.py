@@ -2,88 +2,55 @@ import os
 import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from game_recommender.matrix_factorization import ExplicitMF
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_session import Session
 from flask_mail import Mail
 from game_recommender.config import Config
+from game_recommender.matrix_factorization import ExplicitMF
 
-app = Flask(__name__)
 
-app.config.from_object(Config)
-
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
 login_manager.login_view = "user_authentication.login" # Specify where to redirect when login is required
 login_manager.login_message_category = "info"
-Session(app) # initializes the session functionality in the Flask app
-mail = Mail(app)
-
-data_file_path = os.path.join(app.root_path, "ubyi_norm_0.csv")
-
-# Load the data and initialize the recommender
-ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)
-als = ExplicitMF(n_iters=5, n_factors=20, reg=0.01)
-game_names = ubyi_norm_0.columns.values.tolist()
-FAVOURITE_RATING = 7
-df_last_id = ubyi_norm_0.index[-1]
-
-# add_db_users() requires Rating object from model first which first requires app, db and login_manager 
-# from this module so app, and login_manager should be defined first in order to avoid circular import
-from game_recommender.utils import add_db_users
-with app.app_context():
-    add_db_users(ubyi_norm_0) # Insert user ratings from database into dataframe
-
-from game_recommender.recommend_games.routes import recommend_games
-from game_recommender.recommend_users.routes import recommend_users
-from game_recommender.user_authentication.routes import user_authentication
-from game_recommender.user_info.routes import user_info
-
-app.register_blueprint(recommend_games)
-app.register_blueprint(recommend_users)
-app.register_blueprint(user_authentication)
-app.register_blueprint(user_info)
+sess = Session() # initializes the session functionality in the Flask app
+mail = Mail()
 
 
-## Explanation of Matrix Factorization for Recommender Systems ##
+def create_app(config_class = Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-# The 'ubyi_norm_0' dataframe represents a user-by-item matrix where rows correspond to users, columns correspond to games, and the values represent game ratings. 
-# In this case, the ratings have been normalized using log(hours played) and scaled to a rating range of 1 to 10. Any missing values in the dataframe have been replaced with 0 for model fitting.
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    sess.init_app(app)
+    mail.init_app(app)
 
-# The Matrix Factorization model used here is known as ExplicitMF. It is based on the concept explained in the video tutorial "https://www.youtube.com/watch?v=ZspR5PZemcs" and the article "https://towardsdatascience.com/recommendation-system-matrix-factorization-d61978660b4b".
-# The main idea behind Matrix Factorization is to break down the target matrix (User x Games) into two separate matrices: one for users (User x user_features) and one for games (Games x games_features). 
-# These matrices contain latent features that capture the underlying characteristics of users and games.
-# The goal of the Matrix Factorization model is to find the optimal values for these latent features that minimize the error between the predicted ratings in the User x Games matrix and the actual ratings in the 'ubyi_norm_0' dataframe.
-# Gradient descent is employed as an optimization algorithm to iteratively update the latent feature values and reduce the error between the predicted and actual ratings. The process continues until the error converges to a minimum.
-# By performing Matrix Factorization, the model can predict ratings for user-game pairs that were not originally present in the 'ubyi_norm_0' dataframe. This enables the generation of personalized recommendations based on the predicted ratings.
-# Overall, Matrix Factorization provides an effective approach for building recommender systems by uncovering latent features and predicting user-item interactions with minimal error.
+    # Load the data and initialize the recommender
+    data_file_path = os.path.join(app.root_path, "ubyi_norm_0.csv")
+    ubyi_norm_0 = pd.read_csv(data_file_path, index_col=0)
+    df_last_id = ubyi_norm_0.index[-1]
+    als = ExplicitMF(n_iters=5, n_factors=20, reg=0.01)
 
+    with app.app_context():
+        app.df_last_id = df_last_id
+        app.als = als
+        # Insert user ratings from database into dataframe
+        from game_recommender.utils import add_db_users
+        add_db_users(ubyi_norm_0) 
+        app.ubyi_norm_0 = ubyi_norm_0
 
-## How cookies and sessions work ##
+    from game_recommender.recommend_games.routes import recommend_games
+    from game_recommender.recommend_users.routes import recommend_users
+    from game_recommender.user_authentication.routes import user_authentication
+    from game_recommender.user_info.routes import user_info
 
-# 1) User Opens the Website: 
-#    When a user visits your website for the first time, their browser sends a request to your server.
-#    The server processes the request and generates a response. If the server is configured to use sessions, it includes a Set-Cookie header in the response to initiate a new session for the user.
-
-# 2) Setting up the Session:
-#    When the user's browser receives the response with the Set-Cookie header, it stores the cookie locally.
-#    The cookie contains a session ID, which is a unique identifier for the user's session on your website.
-
-# 3) User Interacts with Website:
-#    The session ID is sent back to the server in every subsequent HTTP request through the Cookie header, allowing the server to recognize the user's session.
-
-# 4) Using the Session Object:
-#    The Flask session object provides a dictionary-like interface to work with session data.
-#    The session data is stored on server's session storage (e.g., memory, filesystem, database).
-#    Data stored in the session will persist throughout the user's visit to your website.
-
-# 5) Flash Messages:
-#    In addition to storing general session data, you can use the flash function provided by Flask to add temporary messages (flash messages) to the session.
-
-# 6) User Leaves the Website:
-#    When the user closes their browser or the session expires (due to inactivity or session timeout), the session data on the server is cleared.
-#    If the user returns to your website later, a new session ID will be generated for them, and the process starts again.
-#    If app.config["SESSION_PERMANENT"] = True, then session ID in cookie will remain same on reponing the browser and hence user session is preserved
-#    Even though we can store user 
+    app.register_blueprint(recommend_games)
+    app.register_blueprint(recommend_users)
+    app.register_blueprint(user_authentication)
+    app.register_blueprint(user_info)
+    
+    return app

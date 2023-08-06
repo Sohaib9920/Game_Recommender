@@ -1,3 +1,8 @@
 flask_venv/
 game_recommender/__pycache__/
 flask_session/
+__pycache__/
+game_recommender/recommend_games/__pycache__/
+game_recommender/recommend_users/__pycache__/
+game_recommender/user_authentication/__pycache__/
+game_recommender/user_info/__pycache__/

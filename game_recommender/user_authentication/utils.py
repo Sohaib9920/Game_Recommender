@@ -4,7 +4,7 @@ from flask_mail import Message
 def send_reset_message(user, url, app):
     with app.app_context():
         subject = "Password Reset Request"
-        sender = "no-reply@GamerInsight.com"
+        sender = "sohaib9920.ahmed@gmail.com"
         recipients = [user.email]
         body = f"""To reset your password, visit the following link:
 {url}

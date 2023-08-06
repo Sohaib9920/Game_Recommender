@@ -1,5 +1,4 @@
-from flask import render_template, url_for, flash, redirect, session
-from game_recommender import ubyi_norm_0
+from flask import render_template, url_for, flash, redirect, session, current_app
 from flask_login import login_required, current_user
 from game_recommender.recommend_users.recommender import recommend_users_by_common_games, recommend_users_by_similarity
 
@@ -17,8 +16,8 @@ def home():
 
         n_recommendations = 20
         # The following functions do not alter original dataframe
-        common_recommendations, common_top5 = recommend_users_by_common_games(ubyi_norm_0, user_ratings, n_recommendations)
-        similarity_recommendations, similarity_top5 = recommend_users_by_similarity(ubyi_norm_0, user_ratings, n_recommendations)
+        common_recommendations, common_top5 = recommend_users_by_common_games(current_app.ubyi_norm_0, user_ratings, n_recommendations)
+        similarity_recommendations, similarity_top5 = recommend_users_by_similarity(current_app.ubyi_norm_0, user_ratings, n_recommendations)
 
         # Store the recommendations and top5 values in the session
         session['common_recommendations'] = common_recommendations
