@@ -1,3 +1,4 @@
+.env
 flask_venv/
 game_recommender/__pycache__/
 flask_session/

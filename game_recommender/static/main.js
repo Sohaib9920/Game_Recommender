@@ -20,6 +20,15 @@ sr.reveal(".sr-slide-right-noreset", { origin: "right", reset: false});
 sr.reveal(".sr-fade-noreset", { origin: "bottom", distance: "0px", delay: 500, reset: false});
 
 
+// Show content-container with animations after page, with all its resources, is finish loading. 
+// It removes the blink of html page before scrollreveal.js finishes loading
+
+window.addEventListener("load", () => {
+  const contentContainer = document.querySelector(".content-container");
+  contentContainer.style.opacity=1;
+})
+
+
 /// WE REQUIRE DATA OF VALID GAME NAMES FOR FORM VALIDATION AS WELL AS DATALIST IN TEMPELATE FOR VALID NAMES RECOMMENDATIONS.
 /// IT CAN BE DONE IN TWO WAYS:
 /// 1) Use fetch API to get game_names from a route (AJAX) and then use it to create datalist using JS
