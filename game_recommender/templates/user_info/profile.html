@@ -13,12 +13,12 @@
     <form method="POST" action="" onsubmit="return validateForm()">
     <div class="row">
 
-        <div class="col-lg-6 sr-slide-left">
+        <div class="col-lg-6 sr-slide-left-noreset">
           <div class="content-section">
             
             
             <h2 class="mb-4">Present Games</h2>
-            <div id="present" class="sr-fade">
+            <div id="present" class="sr-fade-noreset">
               <!-- Present games -->
               {% for rating_object in game_ratings %}
               <div class="mb-3" id="input-{{ loop.index0 }}">
@@ -37,15 +37,15 @@
           </div>
         </div>
 
-        <div class="col-lg-6 sr-slide-right">
+        <div class="col-lg-6 sr-slide-right-noreset">
           <div class="content-section">
 
             <h2 class="mb-4">New Games Added</h2>
-            <div id="new" class="sr-fade">
+            <div id="new" class="sr-fade-noreset">
               <!-- New games added -->
             </div>
             
-            <div class="pt-2 d-flex justify-content-between sr-fade">
+            <div class="pt-2 d-flex justify-content-between sr-fade-noreset">
               <input type="button" class="btn btn-primary"  value="Add New Game" onclick="addGame()">
               <input type="submit" class="btn btn-outline-light update-button" value="Update Profile">
             </div>             

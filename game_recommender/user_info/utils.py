@@ -1,4 +1,4 @@
-from flask import current_app
+from game_recommender import app
 import secrets
 import os
 from PIL import Image
@@ -11,7 +11,7 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8) # Getting random hex name
     _ , f_ext = os.path.splitext(form_picture.filename) # Getting file extension
     picture_filename = random_hex + f_ext # Making picture filename
-    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_filename) # Generating full path to where it should be saved
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_filename) # Generating full path to where it should be saved
     
     # Changing the size of image in order to save space on file system and speedup website
     output_size = (125, 125)

@@ -1,6 +1,6 @@
-from flask import request, render_template, url_for, flash, redirect, Blueprint, current_app
+from flask import request, render_template, url_for, flash, redirect, Blueprint
 from flask_login import login_required, current_user
-from game_recommender import db
+from game_recommender import db, df_last_id, ubyi_norm_0
 from game_recommender.models import Rating, Game
 from game_recommender.user_info.forms import UpdateAccountForm
 from game_recommender.user_info.utils import save_picture
@@ -25,7 +25,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).all()
+    game_ratings = Rating.query.filter_by(user_id=current_user.id).order_by(Rating.rating.desc()).limit(10).all()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template("user_info/account.html", title="Account", image_file=image_file, form=form, game_ratings=game_ratings)
     
@@ -40,8 +40,8 @@ def profile():
         # It is easier to initailly remove all the ratings of user and then re-add them at once after both updating existing games and inserting new games
         Rating.query.filter_by(user=current_user).delete()
         # Also initially remove the ratings of current user from dataframe
-        df_user_id = current_app.df_last_id + current_user.id 
-        current_app.ubyi_norm_0.loc[df_user_id] = 0
+        df_user_id = df_last_id + current_user.id 
+        ubyi_norm_0.loc[df_user_id] = 0
 
         for key, value in request.form.items():
             if key.startswith("games-"):
@@ -53,7 +53,7 @@ def profile():
                 rating_object = Rating(user = current_user, game = game_object, rating = rating)
                 db.session.add(rating_object) 
                 # Add new user ratings to dataframe
-                current_app.ubyi_norm_0.at[df_user_id, game_name] = rating
+                ubyi_norm_0.at[df_user_id, game_name] = rating
         
         db.session.commit()
         return redirect(url_for("user_info.account"))

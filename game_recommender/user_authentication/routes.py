@@ -1,6 +1,6 @@
-from flask import request, render_template, url_for, flash, redirect, Blueprint, current_app
+from flask import request, render_template, url_for, flash, redirect, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
-from game_recommender import db, bcrypt
+from game_recommender import db, bcrypt, app
 from game_recommender.user_authentication.forms import RegistrationForm, LoginForm, ResetRequestForm, ResetPasswordForm
 from game_recommender.models import User
 from game_recommender.user_authentication.utils import send_reset_message
@@ -60,7 +60,7 @@ def reset_request():
         token = user.get_reset_token()
         url = url_for("user_authentication.reset_token", token=token, _external=True)
         # Using threading to send email asynchronously and avoid timeout error
-        email_thread = Thread(target=send_reset_message, args=(user, url, current_app._get_current_object()))
+        email_thread = Thread(target=send_reset_message, args=(user, url, app))
         email_thread.start()
         flash("An email has been sent with instructions to reset your password.", "info")
         return redirect(url_for("user_authentication.login"))

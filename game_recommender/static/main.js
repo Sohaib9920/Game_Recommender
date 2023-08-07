@@ -15,6 +15,10 @@ sr.reveal(".sr-slide-top", { origin: "top" });
 sr.reveal(".sr-slide-bottom", { origin: "bottom" });
 sr.reveal(".sr-fade", { origin: "bottom", distance: "0px", delay: 500});
 
+sr.reveal(".sr-slide-left-noreset", { origin: "left", reset: false});
+sr.reveal(".sr-slide-right-noreset", { origin: "right", reset: false});
+sr.reveal(".sr-fade-noreset", { origin: "bottom", distance: "0px", delay: 500, reset: false});
+
 
 /// WE REQUIRE DATA OF VALID GAME NAMES FOR FORM VALIDATION AS WELL AS DATALIST IN TEMPELATE FOR VALID NAMES RECOMMENDATIONS.
 /// IT CAN BE DONE IN TWO WAYS:
