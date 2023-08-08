@@ -1,32 +1,76 @@
 // SCROLL REVEAL
 
 // Initialize ScrollReveal
-const sr = ScrollReveal({
-  reset: true,
-  distance: "80px",
-  duration: 2000,
-  delay: 10,
+function initScrollReveal() {
+  const sr = ScrollReveal({
+    reset: true,
+    distance: "80px",
+    duration: 2000,
+    delay: 10,
+  });
+
+  // Apply individual reveal effects
+  sr.reveal(".sr-slide-left", { origin: "left" });
+  sr.reveal(".sr-slide-right", { origin: "right" });
+  sr.reveal(".sr-slide-top", { origin: "top" });
+  sr.reveal(".sr-slide-bottom", { origin: "bottom" });
+  sr.reveal(".sr-fade", { origin: "bottom", distance: "0px", delay: 500 });
+
+  sr.reveal(".sr-slide-left-noreset", { origin: "left", reset: false});
+  sr.reveal(".sr-slide-right-noreset", { origin: "right", reset: false});
+  sr.reveal(".sr-fade-noreset", { origin: "bottom", distance: "0px", delay: 500, reset: false});
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const body = document.body;
+
+  if (template == 1) {
+    const backgroundImage = new Image();
+    const isMobile = window.matchMedia("(max-width: 992px)").matches;
+
+    backgroundImage.src = isMobile ? templateConfig.backgroundImageMobile : templateConfig.backgroundImageDesktop;
+    body.style.backgroundSize = isMobile ? templateConfig.backgroundSizeMobile : templateConfig.backgroundSizeDesktop;
+
+    // Set the image as the background once it's loaded
+    backgroundImage.onload = () => {
+      body.style.backgroundImage = `url('${backgroundImage.src}')`;
+      initScrollReveal();
+      setTimeout(() => {
+            body.style.opacity = 1;
+        }, 10)
+    };
+
+  } else if (template == 2) {
+    const backgroundImage = new Image();
+    const isMobile = window.matchMedia("(max-width: 992px)").matches;
+
+    if (isMobile) {
+        body.style.backgroundColor = templateConfig.backgroundColorMobile;
+        initScrollReveal();
+        setTimeout(() => {
+        body.style.opacity = 1;
+        }, 10)
+    } else {
+        body.style.backgroundSize = templateConfig.backgroundSizeDesktop;
+        backgroundImage.src = templateConfig.backgroundImageDesktop;
+        backgroundImage.onload = () => {
+          body.style.backgroundImage = `url('${backgroundImage.src}')`;
+          initScrollReveal();
+          setTimeout(() => {
+                body.style.opacity = 1;
+            }, 10)
+        };
+    }
+
+  } else if (template == 3) {
+    body.style.backgroundColor = templateConfig.backgroundColor;
+    initScrollReveal();
+    setTimeout(() => {
+        body.style.opacity = 1;
+    }, 10)
+  }
 });
-
-// Apply individual reveal effects
-sr.reveal(".sr-slide-left", { origin: "left" });
-sr.reveal(".sr-slide-right", { origin: "right" });
-sr.reveal(".sr-slide-top", { origin: "top" });
-sr.reveal(".sr-slide-bottom", { origin: "bottom" });
-sr.reveal(".sr-fade", { origin: "bottom", distance: "0px", delay: 500});
-
-sr.reveal(".sr-slide-left-noreset", { origin: "left", reset: false});
-sr.reveal(".sr-slide-right-noreset", { origin: "right", reset: false});
-sr.reveal(".sr-fade-noreset", { origin: "bottom", distance: "0px", delay: 500, reset: false});
-
-
-// Show content-container with animations after page, with all its resources, is finish loading. 
-// It removes the blink of html page before scrollreveal.js finishes loading
-
-window.addEventListener("load", () => {
-  const contentContainer = document.querySelector(".content-container");
-  contentContainer.style.opacity=1;
-})
 
 
 /// WE REQUIRE DATA OF VALID GAME NAMES FOR FORM VALIDATION AS WELL AS DATALIST IN TEMPELATE FOR VALID NAMES RECOMMENDATIONS.

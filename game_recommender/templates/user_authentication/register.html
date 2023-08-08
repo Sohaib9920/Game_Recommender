@@ -1,17 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <style>
-        body {
-            background-image: url("{{ url_for('static', filename='images/4.jpg')}}");
-            background-size: auto;
-        }
-        @media screen and (max-width: 992px) {
-        body {
-            background-image: url("{{ url_for('static', filename='images/4-2.jpg') }}");
-            background-size: 100vw 100vh;
-            }
-        }
-    </style>
+    
     <div class="container" id="main">
         <div class="row min-vh-100 justify-content-end align-items-center">
             <div class="col-lg-5 px-xl-5 text-center register-container">
@@ -76,4 +65,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const template = 1;
+        const templateConfig = {
+            backgroundImageDesktop: "{{ url_for('static', filename='images/4.jpg') }}",
+            backgroundSizeDesktop: "auto",
+            backgroundImageMobile: "{{ url_for('static', filename='images/4-2.jpg') }}",
+            backgroundSizeMobile: "100vw 100vh",
+        };
+    </script>
+
 {% endblock %}

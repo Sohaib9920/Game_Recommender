@@ -1,10 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-  <style>
-    body {
-      background-color:black;
-    } 
-  </style>
 
   <div class="container" style="margin-top: 10vh;" id="main">
     <div class="text-center mb-4 text-light sr-slide-top">
@@ -30,6 +25,14 @@
         {% endfor %}
     </div>
   </div>
+
+  <script>
+    const template = 3;
+    const templateConfig = {
+        backgroundColor: "black",
+    };
+  </script>
+  
 {% endblock %}
 
     

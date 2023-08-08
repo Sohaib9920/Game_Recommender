@@ -1,17 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-  <style>
-    body {
-      background-image: url("{{ url_for('static', filename='images/1.jpg') }}");
-      background-size: 100vw 115vh;
-    } 
-    @media screen and (max-width: 992px) {
-      body {
-        background-image: url("{{ url_for('static', filename='images/1-2.jpg') }}");
-        background-size: 100vw 100vh;
-      }
-    }
-  </style>
 
   <div class="container" data-template="recommender" id="main">
     <div class="row min-vh-100 justify-content-start align-items-center">
@@ -37,6 +25,16 @@
     </div>
   </div>
 
+  <script>
+    const template = 1;
+    const templateConfig = {
+      backgroundImageDesktop: "{{ url_for('static', filename='images/1.jpg') }}",
+      backgroundSizeDesktop: "100vw 115vh",
+      backgroundImageMobile: "{{ url_for('static', filename='images/1-2.jpg') }}",
+      backgroundSizeMobile: "100vw 100vh",
+    };
+  </script>
+  
 {% endblock %}
 
     

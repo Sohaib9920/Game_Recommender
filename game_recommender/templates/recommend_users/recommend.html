@@ -2,7 +2,6 @@
 {% block content %}
 <style>
   body {
-    background-color:black;
     overflow-x: hidden;
   } 
   html {
@@ -49,6 +48,13 @@
   </div>
 </div>
 
+<script>
+  const template = 3;
+  const templateConfig = {
+      backgroundColor: "black",
+  };
+</script>
+
 <!-- Template is rendered and sent by server while JS runs on client side -->
 <!-- We can render the data into JS that will run -->
 <script>
@@ -59,4 +65,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Creating chart -->
 <script src="{{ url_for('static', filename='make_chart.js')}}"></script>
+
 {% endblock %}

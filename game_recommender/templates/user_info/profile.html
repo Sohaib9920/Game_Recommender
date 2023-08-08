@@ -1,21 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-  <style>
-    body {
-      background-color:black;
-    } 
-  </style>
 
   <div class="container" style="margin-top: 10vh;" id="main">
     <div class="text-center mb-4 text-light sr-slide-top">
       <h1>Gamer Profile</h1>
     </div>
     <form method="POST" action="" onsubmit="return validateForm()">
-    <div class="row">
+      <div class="row">
 
         <div class="col-lg-6 sr-slide-left-noreset">
           <div class="content-section">
-            
             
             <h2 class="mb-4">Present Games</h2>
             <div id="present" class="sr-fade-noreset">
@@ -31,8 +25,7 @@
                 <input type="button" class="btn btn-danger btn-sm mt-1" value="Delete" onclick="deleteGame('input-{{ loop.index0 }}')">
               </div>
               {% endfor %}
-            </div>
-            
+            </div>          
           
           </div>
         </div>
@@ -58,9 +51,17 @@
           </div>
         </div> 
 
-    </div>
+      </div>
     </form> 
   </div>
+
+  <script>
+    const template = 3;
+    const templateConfig = {
+        backgroundColor: "black",
+    };
+  </script>
+  
 {% endblock %}
 
     
