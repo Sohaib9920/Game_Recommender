@@ -21,7 +21,9 @@ function initScrollReveal() {
   sr.reveal(".sr-fade-noreset", { origin: "bottom", distance: "0px", delay: 500, reset: false});
 }
 
-
+// Handle tempelate background image such that 
+// Background image loads first, then scroll reveal is initialized and then content is displayed
+// This allows for smooth scroll reveal of content and avoids glitch
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
 
@@ -32,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     backgroundImage.src = isMobile ? templateConfig.backgroundImageMobile : templateConfig.backgroundImageDesktop;
     body.style.backgroundSize = isMobile ? templateConfig.backgroundSizeMobile : templateConfig.backgroundSizeDesktop;
 
-    // Set the image as the background once it's loaded
     backgroundImage.onload = () => {
       body.style.backgroundImage = `url('${backgroundImage.src}')`;
       initScrollReveal();
