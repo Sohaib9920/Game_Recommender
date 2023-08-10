@@ -5,6 +5,8 @@ Discover new games that match your taste and enjoy a personalized gaming experie
 
 **Total time spent:** ~160 hours (8 hr/day for 20 days)
 
+https://github.com/Sohaib9920/Game_Recommender/assets/134132129/9004b9d1-355a-416e-9e04-26960777e931
+
 ## Technologies Used
 
 ![Technologies](./pics/technologies.JPG)
